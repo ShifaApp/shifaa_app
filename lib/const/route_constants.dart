@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shifa_app_flutter/screen/screens/login_page.dart';
+import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
+
+import '../screen/screens/dashboard_page.dart';
 
 
 const String homeRoute = "home";
@@ -19,10 +23,10 @@ const String dashBoardRoute = "dashBoard";
 final Map<String, WidgetBuilder> routMap = {
  //  splashRoute: (BuildContext context) => const SplashScreen(),
  //  welcomeRoute: (BuildContext context) => const WelcomeScreen(),
- //  loginRoute: (BuildContext context) => const LogInScreen(),
- //  signupRoute: (BuildContext context) => const SignUpScreen(),
+   loginRoute: (BuildContext context) => const LogInPage(),
+   signupRoute: (BuildContext context) => const SignUpPage(),
  // // mapRoute: (BuildContext context) => const LocationScreen(),
- //  dashBoardRoute: (BuildContext context) => const DashboardPage(),
+   dashBoardRoute: (BuildContext context) => const DashboardPage(),
  //  languageRoute: (BuildContext context) => const LanguagePage(),
 
 

@@ -1,8 +1,7 @@
 
 
-const getMethod = 'GET';
-const postMethod = 'POST';
-const putMethod = 'PUT';
+
+const users = "Users";
 
 
 const ksaLat = 21.543333;

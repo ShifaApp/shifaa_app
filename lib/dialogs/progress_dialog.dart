@@ -32,7 +32,7 @@ Widget alertContent(context){
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      CircularProgressIndicator(color: CustomColors.purpleColor,),
+      CircularProgressIndicator(color: CustomColors.lightBlueColor,),
       const SizedBox(
         height: 5,
       ),
@@ -46,5 +46,5 @@ Widget loadingProgress(){
   return Center(
       child: Container(
           margin: const EdgeInsets.only(top: 30),
-          child: const CircularProgressIndicator()));
+          child:  CircularProgressIndicator(color: CustomColors.lightBlueColor,)));
 }

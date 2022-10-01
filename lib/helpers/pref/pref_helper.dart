@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shifa_app_flutter/helpers/pref/pref_manager.dart';
 
 import '../../const/pref_const.dart';
+import '../../models/user.dart';
 
 
 
@@ -69,11 +70,11 @@ class PreferencesHelper {
     else
       return SharedPrefsManager.setToJson(cities, '');
   }*/
-  //--------------------
+  ////--------------------
   // static Future<User> get getUser async {
   //   Map<String, dynamic> userMap =
   //   await SharedPrefsManager.getFromJson(currentUser);
-  //   return User.fromJson(userMap);
+  //   return User.fromjso(userMap);
   // }
   //
   // static Future setUser(User? user) {

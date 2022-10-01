@@ -1,31 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 
+import '../../const/const.dart';
 import '../../const/route_constants.dart';
 import '../../dialogs/message_dialog.dart';
 import '../../dialogs/progress_dialog.dart';
-import '../../dialogs/snack_message.dart';
 import '../../helpers/info_helper.dart';
 import '../../helpers/route_helper.dart';
+import '../../models/user.dart';
 import '../widget/buttons_class.dart';
 import '../widget/text_field_class.dart';
-
-class LogInPage extends StatefulWidget {
-  const LogInPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LogInPage> createState() => _LogInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LogInPageState extends State<LogInPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   bool isBtnEnabled = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  //    backgroundColor: CustomColors.lightBlueColor,
+     // backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -33,12 +35,12 @@ class _LogInPageState extends State<LogInPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                'Log In'.toUpperCase(),
+                'Create account'.toUpperCase(),
                 textAlign: TextAlign.center,
                 style:  TextStyle(
-                    color: CustomColors.lightBlueColor,
+                  color:  CustomColors.lightBlueColor,
                     fontSize: 28,
-                    fontWeight: FontWeight.w800),
+                    fontWeight: FontWeight.w700),
               ),
 
               ////////////////////////////
@@ -48,22 +50,31 @@ class _LogInPageState extends State<LogInPage> {
                   textFieldStyle(
                       context: context,
                       edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                      lbTxt: 'Your Name',
+                      textInputType: TextInputType.name,
+                      controller: nameController,
+                      textInputAction: TextInputAction.next),
+                  textFieldStyle(
+                      context: context,
+                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                       lbTxt: 'Your Email',
                       controller: emailController,
                       textInputType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next),
                   textFieldStyle(
                       context: context,
-                      controller: passController,
                       edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                       lbTxt: 'Your Password',
+                      controller: passController,
                       textInputType: TextInputType.visiblePassword,
                       obscTxt: true,
                       textInputAction: TextInputAction.done),
-                  lightBlueBtn(
-                      'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
-                    continueLogin();
-                  }),
+                  lightBlueBtn('Sign Up',
+                      const EdgeInsets.only(bottom: 10, top: 10), () {
+                        continueSignUp();
+
+                        //
+                      }),
                 ],
               ),
               const SizedBox(
@@ -75,19 +86,19 @@ class _LogInPageState extends State<LogInPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:  [
-                     Text(
-                      "Don't have an account ? ",
+                    Text(
+                      'Already Have an Account ?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: CustomColors.lightBlueColor,
+                        color:  CustomColors.lightBlueColor,
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      'Sign Up',
+                      'Log In',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: CustomColors.lightBlueColor,
+                        color:  CustomColors.lightBlueColor,
                         fontSize: 14,
                       ),
                     )
@@ -96,7 +107,7 @@ class _LogInPageState extends State<LogInPage> {
                   ],
                 ),
                 onTap: () {
-                  moveToNewStack(context, signupRoute);
+                  moveToNewStack(context, loginRoute);
                 },
               ),
             ],
@@ -106,8 +117,14 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  void continueLogin()async {
+  void continueSignUp() async{
+    if (nameController.value.text == '') {
+      // print('owner name');
 
+      showErrorMessageDialog(context, 'Please Enter your Name');
+
+      return;
+    }
 
     if (emailController.value.text == '') {
       showErrorMessageDialog(context,'Please Enter your Email');
@@ -137,18 +154,26 @@ class _LogInPageState extends State<LogInPage> {
     showLoaderDialog(context);
     FocusScope.of(context).unfocus();
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.value.text,
           password:  passController.value.text
       );
-      moveToNewStack(context, dashBoardRoute);
+      DatabaseReference ref = FirebaseDatabase.instance.reference().child(users);
+
+
+       ref.child(userCredential.user!.uid).set(MyUser(email:emailController.value.text,name: nameController.value.text, ).toMap()).then((value){
+        moveToNewStack(context, dashBoardRoute);
+      });
+
 
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
       }
+    } catch (e) {
+      print(e);
     }
   }
 }
