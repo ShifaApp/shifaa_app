@@ -7,8 +7,12 @@ profileListDesign(txt, image, {onPressed, int badge = 0}) {
   return ListTile(
     tileColor:CustomColors. primaryWhiteColor,
     onTap: onPressed,
-    leading: Image.asset(image),
-    title: textWidget(txt),
+    leading: Icon(image , color: CustomColors.lightBlueColor,),
+    title: Text(
+      txt,
+      style: TextStyle(
+          color:CustomColors. primaryBlackColor, fontSize: 18),
+    ),
     trailing: badge != 0
         ? Container(
             decoration: BoxDecoration(
@@ -28,10 +32,4 @@ profileListDesign(txt, image, {onPressed, int badge = 0}) {
   );
 }
 
-textWidget(txt) {
-  return Text(
-    txt,
-    style: TextStyle(
-        color:CustomColors. primaryBlackColor, fontSize: 18),
-  );
-}
+

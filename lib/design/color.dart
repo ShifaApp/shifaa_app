@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomColors {
-  static Color lightBlueColor = const Color.fromRGBO(26, 206, 208, 1);
+  static Color lightBlueColor = const Color.fromRGBO(25, 53, 183, 1.0);
   static Color purpleColor = const Color.fromRGBO(129, 87, 216, 1);
   static Color primaryWhiteColor =
       Colors.white; //Color.fromRGBO(255, 255, 255, 100);
@@ -11,7 +11,7 @@ class CustomColors {
   static Color primaryBlackColor =
       Colors.black; //Color.fromRGBO(255, 255, 255, 100);
   static Color lightBackgroundColor = const Color.fromRGBO(248, 249, 249, 100);
-  static Color lightGrayColor = const Color.fromRGBO(242, 248, 255, 100);
+  static Color lightGrayColor = const Color.fromRGBO(134, 133, 133, 1.0);
   static Color lightPinkColor = const Color.fromRGBO(245, 230, 254, 100);
   static Color lightGrayBackgroundColor =
       const Color.fromRGBO(248, 249, 249, 100);

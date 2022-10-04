@@ -72,18 +72,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     currentTab = 0;
                   });
                 },
-                child: Container(
-                  width: 70,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color:
-                      currentTab == 0 ?  CustomColors.lightGrayColor : CustomColors. primaryWhiteColor),
-                  height: 35,
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.home_outlined,
-                    color: CustomColors.primaryWhiteColor,
-                  ),
+                child:  Icon(
+                  Icons.home_outlined,
+                  color:    currentTab == 0 ?  CustomColors.lightBlueColor :  CustomColors.lightGrayColor,
                 )
                 ,
               ),
@@ -101,18 +92,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     currentTab = 2;
                   });
                 },
-                child: Container(
-                  width: 70,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color:
-                      currentTab == 2 ?  CustomColors.lightGrayColor :  CustomColors.primaryWhiteColor),
-                  height: 35,
-                  alignment: Alignment.center,
-                  child:  Icon(
-                    Icons.settings,
-                    color: CustomColors.primaryWhiteColor,
-                  ),
+                child: Icon(
+                  Icons.settings,
+                  color:   currentTab == 2 ?  CustomColors.lightBlueColor :  CustomColors.lightGrayColor,
                 ),
               ),
             ],
