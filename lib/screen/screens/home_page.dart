@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.exists && snapshot.value != null) {
             Hospitals hospital = Hospitals.fromJson(snapshot.value);
 
+            //list item design
             return InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
