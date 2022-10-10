@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
-import 'package:shifa_app_flutter/screen/screens/appointejments_page.dart';
+import 'package:shifa_app_flutter/screen/screens/appointements_page.dart';
 import 'package:shifa_app_flutter/screen/screens/home_page.dart';
 import 'package:shifa_app_flutter/screen/screens/setting_page.dart';
 class DashboardPage extends StatefulWidget {

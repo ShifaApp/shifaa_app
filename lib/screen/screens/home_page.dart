@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
             return InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return  HospitalDetails(hospital:  hospital,);
+                  return HospitalDetails(
+                    hospital: hospital,
+                  );
                 }));
               },
               child: Container(

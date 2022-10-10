@@ -27,7 +27,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // backgroundColor: CustomColors.lightBlueColor,
+      resizeToAvoidBottomInset: false,
+
+      // backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

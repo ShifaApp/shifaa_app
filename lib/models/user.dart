@@ -1,14 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shifa_app_flutter/const/const.dart';
 import 'Recipes.dart';
-import 'Visits.dart';
+import '../../models/Appointemnts.dart';
 
 class MyUser {
 
  String name , email;
-List<Visits> myVisits =[];
+List<Appointments> myVisits =[];
 List<Recipes> myRecipes =[];
 
- MyUser({required this.name, required this.email});
+
+addVisit(Appointments appointments){
+ myVisits.add(appointments);
+}
+ MyUser({ this.name='',  this.email=''});
 
  Map<String,dynamic> toMap(){
   return {
@@ -17,6 +22,14 @@ List<Recipes> myRecipes =[];
 
   };
  }
+
+ Map<String,dynamic> toJson() =>{
+
+   appointments:myVisits,
+   //"email":email,
+
+  };
+
 //
 // User.fromJson(dynamic json) {
 //

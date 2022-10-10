@@ -25,6 +25,7 @@ class _LogInPageState extends State<LogInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
   //    backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
         child: Container(
@@ -59,7 +60,7 @@ class _LogInPageState extends State<LogInPage> {
                       lbTxt: 'Your Password',
                       textInputType: TextInputType.visiblePassword,
                       obscTxt: true,
-                      textInputAction: TextInputAction.done),
+                      textInputAction: TextInputAction.go),
                   lightBlueBtn(
                       'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
                     continueLogin();

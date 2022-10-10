@@ -3,6 +3,7 @@
 
 const users = "Users";
 const hospitals = "Hospitals";
+const appointments = "appointments";
 
 
 const ksaLat = 21.543333;
