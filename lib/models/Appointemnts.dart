@@ -39,5 +39,14 @@ class Appointments {
     map['hospital_name'] = _hospitalName;
     return map;
   }
+  Map<String,dynamic> toMap(){
+    return {
+    "completed": _completed,
+   'date': _date,
+    'doctor_name': _doctorName,
+    'hospital_name': _hospitalName,
+
+    };
+  }
 
 }

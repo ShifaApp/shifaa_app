@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:shifa_app_flutter/const/route_constants.dart';
+import 'package:shifa_app_flutter/dialogs/snack_message.dart';
+import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/user.dart';
 import 'package:shifa_app_flutter/screen/widget/buttons_class.dart';
 
@@ -195,18 +198,20 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           .child(FirebaseAuth.instance.currentUser!.uid)
                           .child(appointments);
 
-                      List<Appointments> list = [
-                        Appointments(
-                            date:
-                                " ${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}",
-                            doctorName: widget.doctor.name!,
-                            hospitalName: widget.doctor.specialist!,
-                            completed: false)
-                      ];
-
-                      //todo: add to datatbase
-
-                      ref.update({appointments: list.toList()});
+                      ref
+                          .push()
+                          .update(Appointments(
+                                  date:
+                                      " ${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}",
+                                  doctorName: widget.doctor.name!,
+                                  hospitalName: widget.doctor.specialist!,
+                                  completed: false)
+                              .toMap())
+                          .then((value) {
+                        showSuccessMessage(
+                            context, 'Your reservation done successfully');
+                        moveToNewStack(context, dashBoardRoute);
+                      });
                     })
                   ],
                 ),
