@@ -5,7 +5,7 @@ import '../../models/Appointemnts.dart';
 
 class MyUser {
 
- String name , email;
+ String name='' , email='',bloodType='';
 List<Appointments> myVisits =[];
 List<Recipes> myRecipes =[];
 
@@ -13,12 +13,13 @@ List<Recipes> myRecipes =[];
 addVisit(Appointments appointments){
  myVisits.add(appointments);
 }
- MyUser({ this.name='',  this.email=''});
+ MyUser({ this.name='',  this.email='',this.bloodType=''});
 
  Map<String,dynamic> toMap(){
   return {
    "name":name,
    "email":email,
+   "bloodType":bloodType,
 
   };
  }
@@ -29,7 +30,13 @@ addVisit(Appointments appointments){
    //"email":email,
 
   };
+ MyUser.fromJson(dynamic json) {
 
+  bloodType = json['bloodType'] ?? '';
+  email = json['email'] ?? ' ';
+  name = json['name']?? '';
+
+ }
 //
 // User.fromJson(dynamic json) {
 //
