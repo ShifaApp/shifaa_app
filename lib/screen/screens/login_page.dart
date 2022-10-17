@@ -26,21 +26,24 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-  //    backgroundColor: CustomColors.lightBlueColor,
+      backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                'Log In'.toUpperCase(),
-                textAlign: TextAlign.center,
-                style:  TextStyle(
-                    color: CustomColors.lightBlueColor,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800),
-              ),
+
+              Image.asset('assests/shifa.png',height: MediaQuery.of(context).size.height/4,),
+              // Text(
+              //   'Log In'.toUpperCase(),
+              //   textAlign: TextAlign.center,
+              //   style:  TextStyle(
+              //       color: CustomColors.lightBlueColor,
+              //       fontSize: 28,
+              //       fontWeight: FontWeight.w800),
+              // ),
+
 
               ////////////////////////////
 

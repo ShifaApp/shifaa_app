@@ -29,21 +29,15 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
 
-      // backgroundColor: CustomColors.lightBlueColor,
+       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                'Create account'.toUpperCase(),
-                textAlign: TextAlign.center,
-                style:  TextStyle(
-                  color:  CustomColors.lightBlueColor,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700),
-              ),
+              Image.asset('assests/shifa.png',height: MediaQuery.of(context).size.height/4,),
+
 
               ////////////////////////////
 

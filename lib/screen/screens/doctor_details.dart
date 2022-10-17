@@ -5,6 +5,7 @@ import 'package:shifa_app_flutter/const/route_constants.dart';
 import 'package:shifa_app_flutter/dialogs/snack_message.dart';
 import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/user.dart';
+import 'package:shifa_app_flutter/screen/screens/payment_page.dart';
 import 'package:shifa_app_flutter/screen/widget/buttons_class.dart';
 
 import '../../const/const.dart';
@@ -191,27 +192,18 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       ),
                     ),
                     lightBlueBtn(
-                        'Confirm appointment', const EdgeInsets.all(20), () {
-                      DatabaseReference ref = FirebaseDatabase.instance
-                          .reference()
-                          .child(users)
-                          .child(FirebaseAuth.instance.currentUser!.uid)
-                          .child(appointments);
-
-                      ref
-                          .push()
-                          .update(Appointments(
-                                  date:
-                                      " ${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}",
-                                  doctorName: widget.doctor.name!,
-                                  hospitalName: widget.doctor.specialist!,
-                                  completed: false)
-                              .toMap())
-                          .then((value) {
-                        showSuccessMessage(
-                            context, 'Your reservation done successfully');
-                        moveToNewStack(context, dashBoardRoute);
-                      });
+                        'Continue Payment', const EdgeInsets.all(20), () {
+                      String date =
+                          " ${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}";
+                      showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return PaymentPage(
+                              doctor: widget.doctor,
+                              date: date,
+                            );
+                          });
                     })
                   ],
                 ),
