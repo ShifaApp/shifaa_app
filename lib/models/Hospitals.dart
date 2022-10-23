@@ -8,17 +8,20 @@ import 'Doctors.dart';
 
 class Hospitals {
   Hospitals({
-      List<Doctors>? doctors, 
-      String? address, 
-      String? image, 
-      String? name, 
-      int? phone,}){
+    List<Doctors>? doctors,
+    String? address,
+    String? image,
+    String? name,
+    String? email,
+    String? phone,
+  }) {
     _doctors = doctors;
     _address = address;
     _image = image;
     _name = name;
+    _email = email;
     _phone = phone;
-}
+  }
 
   Hospitals.fromJson(dynamic json) {
     if (json['Doctors'] != null) {
@@ -30,19 +33,24 @@ class Hospitals {
     _address = json['address'];
     _image = json['image'];
     _name = json['name'];
+    _email = json['email'];
+
     _phone = json['phone'];
   }
   List<Doctors>? _doctors;
   String? _address;
   String? _image;
   String? _name;
-  int? _phone;
+  String? _email;
+
+  String? _phone;
 
   List<Doctors>? get doctors => _doctors;
   String? get address => _address;
   String? get image => _image;
   String? get name => _name;
-  int? get phone => _phone;
+  String? get email => _email;
+  String? get phone => _phone;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -50,10 +58,21 @@ class Hospitals {
       map['Doctors'] = _doctors?.map((v) => v.toJson()).toList();
     }
     map['address'] = _address;
+    map['email'] = _email;
     map['image'] = _image;
     map['name'] = _name;
     map['phone'] = _phone;
     return map;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "email": email,
+      'address': _address,
+      'image': _image,
+      'phone': _phone,
+    };
   }
 
   @override
@@ -61,4 +80,3 @@ class Hospitals {
     return 'Hospitals{_doctors: $_doctors, _address: $_address, _image: $_image, _name: $_name, _phone: $_phone}';
   }
 }
-

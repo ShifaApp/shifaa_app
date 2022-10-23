@@ -68,6 +68,17 @@ class _LogInPageState extends State<LogInPage> {
                       'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
                     continueLogin();
                   }),
+
+                  GestureDetector(onTap: (){
+                    moveToNewStack(context, registerHospitalRoute);
+
+                  },
+                    child: Text('Register as Hospital',
+                      style:  TextStyle(
+                              color: CustomColors.lightBlueColor,
+                              fontSize: 28,
+                               fontWeight: FontWeight.w800)),
+                  ),
                 ],
               ),
               const SizedBox(
