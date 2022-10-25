@@ -36,7 +36,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
               margin: const EdgeInsets.all(10),
               //    height: MediaQuery.of(context).size.height/7,
               decoration: BoxDecoration(
-                color: appointments.completed!
+                color: appointments.reserved!
                     ? Colors.green.withOpacity(0.3)
                     : CustomColors.primaryWhiteColor,
                 borderRadius: BorderRadius.circular(10),

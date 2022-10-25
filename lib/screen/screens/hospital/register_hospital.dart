@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -41,129 +42,137 @@ class _RegisterHospitalState extends State<RegisterHospital> {
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                'assests/shifa.png',
-                height: MediaQuery.of(context).size.height / 4,
-              ),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  'assests/shifa.png',
+                  height: MediaQuery.of(context).size.height / 4,
+                ),
 
-              ////////////////////////////
+                ////////////////////////////
 
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final ImagePicker picker = ImagePicker();
-                      // Pick an image
-                      await picker
-                          .pickImage(source: ImageSource.gallery)
-                          .then((value) {
-                        setState(() {
-                          pickedImage = value;
-
-                          print(pickedImage!.name);
-                        });
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.height / 7,
-                      decoration: BoxDecoration(
-                          color: CustomColors.primaryWhiteColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: pickedImage != null
-                              ? Image.file(
-                                  File(pickedImage!.path),
-                                )
-                              : const CircleAvatar()),
-                    ),
-                  ),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Name',
-                      textInputType: TextInputType.name,
-                      controller: nameController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Phone',
-                      textInputType: TextInputType.phone,
-                      controller: phoneController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Address',
-                      textInputType: TextInputType.text,
-                      controller: addressController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Email',
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Password',
-                      controller: passController,
-                      textInputType: TextInputType.visiblePassword,
-                      obscTxt: true,
-                      textInputAction: TextInputAction.done),
-                  lightBlueBtn(
-                      'Continue', const EdgeInsets.only(bottom: 10, top: 10),
-                      () {
-                    continueSignUp();
-
-                    //
-                  }),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              )
-              //////////////////////////////////////////
-              ,
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
-                    Text(
-                      'Already Have an Account ?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
+                    InkWell(
+                      onTap: () async {
+                        final ImagePicker picker = ImagePicker();
+                        // Pick an image
+                        await picker
+                            .pickImage(source: ImageSource.gallery)
+                            .then((value) {
+                          setState(() {
+                            pickedImage = value;
+
+                            print(pickedImage!.name);
+                          });
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: MediaQuery.of(context).size.height / 6,
+                        decoration: BoxDecoration(
+                            color: CustomColors.primaryWhiteColor,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: pickedImage != null
+                                ? Image.file(
+                                    File(pickedImage!.path),
+                                  )
+                                : CircleAvatar(
+                                    child: Icon(
+                                      Icons.image,
+                                      color: CustomColors.primaryWhiteColor,
+                                      size: 30,
+                                    ),
+                                  )),
                       ),
                     ),
-                    Text(
-                      'Log In',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
-                      ),
-                    )
-                    ///////////////
-                    ,
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Hospital Name',
+                        textInputType: TextInputType.name,
+                        controller: nameController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Hospital Phone',
+                        textInputType: TextInputType.phone,
+                        controller: phoneController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Hospital Address',
+                        textInputType: TextInputType.text,
+                        controller: addressController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Hospital Email',
+                        controller: emailController,
+                        textInputType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Hospital Password',
+                        controller: passController,
+                        textInputType: TextInputType.visiblePassword,
+                        obscTxt: true,
+                        textInputAction: TextInputAction.done),
+                    lightBlueBtn(
+                        'Continue', const EdgeInsets.only(bottom: 10, top: 10),
+                        () {
+                      continueSignUp();
+
+                      //
+                    }),
                   ],
                 ),
-                onTap: () {
-                  moveToNewStack(context, loginRoute);
-                },
-              ),
-            ],
+                const SizedBox(
+                  height: 50,
+                )
+                //////////////////////////////////////////
+                ,
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already Have an Account ?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.lightBlueColor,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        'Log In',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.lightBlueColor,
+                          fontSize: 14,
+                        ),
+                      )
+                      ///////////////
+                      ,
+                    ],
+                  ),
+                  onTap: () {
+                    moveToNewStack(context, loginRoute);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -174,7 +183,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
     if (nameController.value.text == '') {
       // print('owner name');
 
-      showErrorMessageDialog(context, 'Please Enter your Name');
+      showErrorMessageDialog(context, 'Please Enter Hospital Name');
 
       return;
     }
@@ -182,7 +191,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
     if (phoneController.value.text == '') {
       // print('owner name');
 
-      showErrorMessageDialog(context, 'Please Enter your Phone');
+      showErrorMessageDialog(context, 'Please Enter Hospital Phone');
 
       return;
     }
@@ -190,12 +199,12 @@ class _RegisterHospitalState extends State<RegisterHospital> {
     if (addressController.value.text == '') {
       // print('owner name');
 
-      showErrorMessageDialog(context, 'Please Enter your Address');
+      showErrorMessageDialog(context, 'Please Enter Hospital Address');
 
       return;
     }
     if (emailController.value.text == '') {
-      showErrorMessageDialog(context, 'Please Enter your Email');
+      showErrorMessageDialog(context, 'Please Enter Hospital Email');
 
       return;
     }
@@ -207,7 +216,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
     }
 
     if (passController.value.text == '') {
-      showErrorMessageDialog(context, 'Please Enter your Password');
+      showErrorMessageDialog(context, 'Please Enter Hospital Password');
 
       return;
     }
@@ -216,29 +225,47 @@ class _RegisterHospitalState extends State<RegisterHospital> {
 
       return;
     }
+
+    if (pickedImage == null) {
+      showErrorMessageDialog(context, 'Please Pick Hospital Image');
+
+      return;
+    }
     isBtnEnabled = false;
     //----------show progress----------------
-
+    String imageUrl = '';
     showLoaderDialog(context);
     FocusScope.of(context).unfocus();
     try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.value.text,
-          password: passController.value.text);
+      // register in auth
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.value.text,
+              password: passController.value.text);
+
+      //save image in storage
+      var storageRef = FirebaseStorage.instance.ref().child("images");
+      storageRef.putFile(File(pickedImage!.path)).whenComplete(() async {
+        var url = await storageRef.getDownloadURL();
+        imageUrl = url.toString();
+      }).catchError((onError) {
+        print(onError);
+      });
+      // save data in database
       DatabaseReference ref =
           FirebaseDatabase.instance.reference().child(hospitals);
 
       ref
-          .child(Random().nextInt(10).toString())
+          .child(userCredential.user!.uid)
           .set(Hospitals(
+                  image: imageUrl,
                   email: emailController.value.text,
                   name: nameController.value.text,
                   address: addressController.value.text,
                   phone: phoneController.value.text)
               .toMap())
           .then((value) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const RegisterDoctor()));
+        moveToNewStack(context, hospitalDashBoardRoute);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

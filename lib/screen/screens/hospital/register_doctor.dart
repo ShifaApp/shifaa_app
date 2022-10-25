@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,7 +11,6 @@ import 'package:shifa_app_flutter/design/color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
-import 'package:shifa_app_flutter/models/Hospitals.dart';
 
 import '../../../dialogs/message_dialog.dart';
 import '../../../dialogs/progress_dialog.dart';
@@ -19,7 +19,8 @@ import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
 
 class RegisterDoctor extends StatefulWidget {
-  const RegisterDoctor({Key? key}) : super(key: key);
+  final String hospitalId;
+  const RegisterDoctor({Key? key, required this.hospitalId}) : super(key: key);
 
   @override
   State<RegisterDoctor> createState() => _RegisterDoctorState();
@@ -42,103 +43,112 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                'assests/shifa.png',
-                height: MediaQuery.of(context).size.height / 4,
-              ),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  'assests/shifa.png',
+                  height: MediaQuery.of(context).size.height / 4,
+                ),
 
-              ////////////////////////////
+                ////////////////////////////
 
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final ImagePicker picker = ImagePicker();
-                      // Pick an image
-                      await picker
-                          .pickImage(source: ImageSource.gallery)
-                          .then((value) {
-                        setState(() {
-                          pickedImage = value;
+                Column(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        final ImagePicker picker = ImagePicker();
+                        // Pick an image
+                        await picker
+                            .pickImage(source: ImageSource.gallery)
+                            .then((value) {
+                          setState(() {
+                            pickedImage = value;
 
-                          print(pickedImage!.name);
+                            print(pickedImage!.name);
+                          });
                         });
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.height / 7,
-                      decoration: BoxDecoration(
-                          color: CustomColors.primaryWhiteColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: pickedImage != null
-                              ? Image.file(
-                                  File(pickedImage!.path),
-                                )
-                              : const CircleAvatar()),
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: MediaQuery.of(context).size.height / 7,
+                        decoration: BoxDecoration(
+                            color: CustomColors.primaryWhiteColor,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: pickedImage != null
+                                ? Image.file(
+                                    File(pickedImage!.path),
+                                  )
+                                : CircleAvatar(
+                                    child: Icon(
+                                      Icons.image,
+                                      color: CustomColors.primaryWhiteColor,
+                                      size: 30,
+                                    ),
+                                  )),
+                      ),
                     ),
-                  ),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: ' Name',
-                      textInputType: TextInputType.name,
-                      controller: nameController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Specialist',
-                      textInputType: TextInputType.text,
-                      controller: majorController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: ' Phone',
-                      textInputType: TextInputType.phone,
-                      controller: phoneController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: ' Fess',
-                      textInputType: TextInputType.number,
-                      controller: feesController,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: ' Email',
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: ' Password',
-                      controller: passController,
-                      textInputType: TextInputType.visiblePassword,
-                      obscTxt: true,
-                      textInputAction: TextInputAction.done),
-                  lightBlueBtn(
-                      'Sign Up', const EdgeInsets.only(bottom: 10, top: 10),
-                      () {
-                    continueSignUp();
 
-                    //
-                  }),
-                ],
-              ),
-            ],
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: ' Name',
+                        textInputType: TextInputType.name,
+                        controller: nameController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: 'Specialist',
+                        textInputType: TextInputType.text,
+                        controller: majorController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: ' Phone',
+                        textInputType: TextInputType.phone,
+                        controller: phoneController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: ' Fess',
+                        textInputType: TextInputType.number,
+                        controller: feesController,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: ' Email',
+                        controller: emailController,
+                        textInputType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next),
+                    textFieldStyle(
+                        context: context,
+                        edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                        lbTxt: ' Password',
+                        controller: passController,
+                        textInputType: TextInputType.visiblePassword,
+                        obscTxt: true,
+                        textInputAction: TextInputAction.done),
+                    lightBlueBtn(
+                        'Sign Up', const EdgeInsets.only(bottom: 10, top: 10),
+                        () {
+                      continueSignUp();
+
+                      //
+                    }),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -199,21 +209,46 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
 
       return;
     }
+    if (pickedImage == null) {
+      showErrorMessageDialog(context, 'Please Pick Doctor Image');
+
+      return;
+    }
     isBtnEnabled = false;
     //----------show progress----------------
+    String imageUrl = '';
 
     showLoaderDialog(context);
     FocusScope.of(context).unfocus();
     try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.value.text,
-          password: passController.value.text);
-      DatabaseReference ref =
-          FirebaseDatabase.instance.reference().child(hospitals);
+      // register in auth
+
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.value.text,
+              password: passController.value.text);
+
+      //save image in storage
+      var storageRef = FirebaseStorage.instance.ref().child("images");
+      storageRef.putFile(File(pickedImage!.path)).whenComplete(() async {
+        var url = await storageRef.getDownloadURL();
+        imageUrl = url.toString();
+      }).catchError((onError) {
+        print(onError);
+      });
+      // save data in database
+
+      DatabaseReference ref = FirebaseDatabase.instance
+          .reference()
+          .child(hospitals)
+          .child(widget.hospitalId)
+          .child(doctors);
 
       ref
-          .child(Random().nextInt(10).toString())
+          .child(userCredential.user!.uid)
           .set(Doctors(
+                  image: imageUrl,
+                  hospitalId:widget.hospitalId ,
                   email: emailController.value.text,
                   name: nameController.value.text,
                   fees: feesController.value.text,

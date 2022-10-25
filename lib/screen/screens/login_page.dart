@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/design/color.dart';
+import 'package:shifa_app_flutter/models/user.dart';
 
 import '../../const/route_constants.dart';
 import '../../dialogs/message_dialog.dart';
@@ -8,6 +11,8 @@ import '../../dialogs/progress_dialog.dart';
 import '../../dialogs/snack_message.dart';
 import '../../helpers/info_helper.dart';
 import '../../helpers/route_helper.dart';
+import '../../models/Doctors.dart';
+import '../../models/Hospitals.dart';
 import '../widget/buttons_class.dart';
 import '../widget/text_field_class.dart';
 
@@ -33,8 +38,10 @@ class _LogInPageState extends State<LogInPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-
-              Image.asset('assests/shifa.png',height: MediaQuery.of(context).size.height/4,),
+              Image.asset(
+                'assests/shifa.png',
+                height: MediaQuery.of(context).size.height / 4,
+              ),
               // Text(
               //   'Log In'.toUpperCase(),
               //   textAlign: TextAlign.center,
@@ -43,7 +50,6 @@ class _LogInPageState extends State<LogInPage> {
               //       fontSize: 28,
               //       fontWeight: FontWeight.w800),
               // ),
-
 
               ////////////////////////////
 
@@ -68,16 +74,15 @@ class _LogInPageState extends State<LogInPage> {
                       'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
                     continueLogin();
                   }),
-
-                  GestureDetector(onTap: (){
-                    moveToNewStack(context, registerHospitalRoute);
-
-                  },
+                  GestureDetector(
+                    onTap: () {
+                      moveToNewStack(context, registerHospitalRoute);
+                    },
                     child: Text('Register as Hospital',
-                      style:  TextStyle(
-                              color: CustomColors.lightBlueColor,
-                              fontSize: 28,
-                               fontWeight: FontWeight.w800)),
+                        style: TextStyle(
+                            color: CustomColors.lightBlueColor,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800)),
                   ),
                 ],
               ),
@@ -89,8 +94,8 @@ class _LogInPageState extends State<LogInPage> {
               GestureDetector(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
-                     Text(
+                  children: [
+                    Text(
                       "Don't have an account ? ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -121,11 +126,9 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  void continueLogin()async {
-
-
+  void continueLogin() async {
     if (emailController.value.text == '') {
-      showErrorMessageDialog(context,'Please Enter your Email');
+      showErrorMessageDialog(context, 'Please Enter your Email');
 
       return;
     }
@@ -137,7 +140,7 @@ class _LogInPageState extends State<LogInPage> {
     }
 
     if (passController.value.text == '') {
-      showErrorMessageDialog(context,'Please Enter your Password');
+      showErrorMessageDialog(context, 'Please Enter your Password');
 
       return;
     }
@@ -152,17 +155,35 @@ class _LogInPageState extends State<LogInPage> {
     showLoaderDialog(context);
     FocusScope.of(context).unfocus();
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.value.text,
-          password:  passController.value.text
-      );
-      moveToNewStack(context, dashBoardRoute);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.value.text,
+              password: passController.value.text);
 
+      DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+      ref.child(users).child(userCredential.user!.uid).get().then((value) {
+        if (value.exists) {
+          print(value.value);
+          MyUser myUser = MyUser.fromJson(value.value);
+          moveToNewStack(context, dashBoardRoute);
+        } else {
+          ref.child(hospitals).child(userCredential.user!.uid);
+          ref.get().then((value) {
+            if (value.exists) {
+              print(value.value);
+              print('Hospital + ${Hospitals.fromJson(value.value)}');
+              moveToNewStack(context, hospitalDashBoardRoute);
+            }
+          });
+        }
+      });
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        showSuccessMessage(context, 'No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        showSuccessMessage(context, 'Wrong password provided for that user.');
       }
     }
   }

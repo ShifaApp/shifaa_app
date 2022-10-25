@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shifa_app_flutter/screen/screens/doctor/doctor_dashboard.dart';
+import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_hospital.dart';
 import 'package:shifa_app_flutter/screen/screens/login_page.dart';
 import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
@@ -20,14 +22,18 @@ const String mainRoute = "mainRoute";
 //const String mapRoute = "mapRoute";
 const String dashBoardRoute = "dashBoard";
 const String registerHospitalRoute = "registerHospital";
+const String hospitalDashBoardRoute = "hospitalDashBoard";
+const String doctorDashBoardRoute = "doctorDashBoard";
 
 
 final Map<String, WidgetBuilder> routMap = {
- //  splashRoute: (BuildContext context) => const SplashScreen(),
+   doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
+   hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
+
    registerHospitalRoute: (BuildContext context) => const RegisterHospital(),
    loginRoute: (BuildContext context) => const LogInPage(),
    signupRoute: (BuildContext context) => const SignUpPage(),
- // // mapRoute: (BuildContext context) => const LocationScreen(),
+   hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
    dashBoardRoute: (BuildContext context) => const DashboardPage(),
  //  languageRoute: (BuildContext context) => const LanguagePage(),
 

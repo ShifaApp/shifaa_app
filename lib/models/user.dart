@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shifa_app_flutter/const/const.dart';
-import 'Recipes.dart';
 import '../../models/Appointemnts.dart';
+import 'Recipe.dart';
 
 class MyUser {
 
  String name='' , email='',bloodType='';
 List<Appointments> myVisits =[];
-List<Recipes> myRecipes =[];
+List<Recipe> myRecipes =[];
 
 
 addVisit(Appointments appointments){
