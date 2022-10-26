@@ -13,7 +13,7 @@ class Doctors {
     String? email,
     String? hospitalId,
     String? hospitalName,
-
+    String? id,
     String? specialist,
   }) {
     _fees = fees;
@@ -23,6 +23,7 @@ class Doctors {
     _hospitalId = hospitalId;
     _name = name;
     _phone = phone;
+    _id = id;
     _specialist = specialist;
   }
 
@@ -36,6 +37,7 @@ class Doctors {
       _hospitalName = json['hospitalName'];
       _hospitalId = json['hospitalId'];
       _specialist = json['specialist'];
+      _id = json['doctorId'];
     }
   }
   String? _fees;
@@ -46,11 +48,14 @@ class Doctors {
   String? _hospitalName;
   String? _phone;
   String? _specialist;
+  String? _id;
 
   String? get fees => _fees;
   String? get image => _image;
   String? get name => _name;
   String? get phone => _phone;
+  String? get doctorId => _id;
+
   String? get hospitalId => _hospitalId;
   String? get hospitalName => _hospitalName;
 
@@ -61,11 +66,13 @@ class Doctors {
     final map = <String, dynamic>{};
     map['fees'] = _fees;
     map['image'] = _image;
-    map['hospitalName']=_hospitalName;
+    map['hospitalName'] = _hospitalName;
     map['email'] = _email;
     map['name'] = _name;
     map['phone'] = _phone;
     map['hospitalId'] = _hospitalId;
+    map['doctorId'] = _id;
+
     map['specialist'] = _specialist;
     return map;
   }
@@ -75,7 +82,8 @@ class Doctors {
       "name": name,
       "email": email,
       'fees': _fees,
-      'hospitalName' :_hospitalName,
+      'doctorId': _id,
+      'hospitalName': _hospitalName,
       'specialist': _specialist,
       'hospitalId': _hospitalId,
       'image': _image,

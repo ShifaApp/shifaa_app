@@ -58,19 +58,12 @@ class Appointments {
   String? get patientId => _patientId;
   String? get doctorId => _doctorId;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['completed'] = _completed;
-    map['date'] = _date;
-    map['doctor_name'] = _doctorName;
-    map['hospital_name'] = _hospitalName;
-    map['paymentType'] = _paymentType;
-    map['patientName'] = _patientName;
-    map['patientId'] = _patientId;
-
-    return map;
+  setPatientName(String patientName){
+    _patientName = patientName;
   }
-
+  setPatientId(String patientId){
+    _patientId = patientId;
+  }
   Map<String, dynamic> toMap() {
     return {
       "completed": _completed,

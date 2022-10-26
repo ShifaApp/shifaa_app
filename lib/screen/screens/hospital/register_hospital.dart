@@ -16,6 +16,7 @@ import '../../../dialogs/message_dialog.dart';
 import '../../../dialogs/progress_dialog.dart';
 import '../../../helpers/info_helper.dart';
 import '../../../helpers/route_helper.dart';
+import '../../widget/app_bar_design.dart';
 import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
 
@@ -39,6 +40,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: basicAppBarWithBck('Register Hospital'),
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
@@ -48,10 +50,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.asset(
-                  'assests/shifa.png',
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
+
 
                 ////////////////////////////
 

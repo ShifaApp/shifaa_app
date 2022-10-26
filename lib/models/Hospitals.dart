@@ -14,10 +14,12 @@ class Hospitals {
     String? name,
     String? email,
     String? phone,
+    bool? accepted,
   }) {
     _doctors = doctors;
     _address = address;
     _image = image;
+    _accepted = accepted;
     _name = name;
     _email = email;
     _phone = phone;
@@ -34,7 +36,7 @@ class Hospitals {
     _image = json['image'];
     _name = json['name'];
     _email = json['email'];
-
+    _accepted = json['accepted'];
     _phone = json['phone'];
   }
   List<Doctors>? _doctors;
@@ -42,7 +44,7 @@ class Hospitals {
   String? _image;
   String? _name;
   String? _email;
-
+  bool? _accepted;
   String? _phone;
 
   List<Doctors>? get doctors => _doctors;
@@ -51,6 +53,7 @@ class Hospitals {
   String? get name => _name;
   String? get email => _email;
   String? get phone => _phone;
+  bool? get accepted => _accepted;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -62,6 +65,7 @@ class Hospitals {
     map['image'] = _image;
     map['name'] = _name;
     map['phone'] = _phone;
+    map['accepted'] = _accepted;
     return map;
   }
 
@@ -72,6 +76,7 @@ class Hospitals {
       'address': _address,
       'image': _image,
       'phone': _phone,
+      'accepted': _accepted,
     };
   }
 

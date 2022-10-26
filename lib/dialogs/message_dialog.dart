@@ -36,8 +36,8 @@ Widget showMessageDialog(
 }
 
 //------------------------------------
-FlatButton messageDialogBtns(BuildContext context) {
-  return FlatButton(
+MaterialButton messageDialogBtns(BuildContext context) {
+  return MaterialButton(
     textColor:CustomColors. purpleColor,
     onPressed: () {
       Navigator.pop(context);
@@ -50,8 +50,8 @@ FlatButton messageDialogBtns(BuildContext context) {
 }
 //------------------------------------
 
-FlatButton directToPageBtns(BuildContext context, String route) {
-  return FlatButton(
+MaterialButton directToPageBtns(BuildContext context, String route) {
+  return MaterialButton(
     textColor: CustomColors.purpleColor,
     onPressed: () {
       Navigator.pop(context);

@@ -14,9 +14,8 @@ import '../widget/buttons_class.dart';
 import '../widget/text_field_class.dart';
 
 class PaymentPage extends StatefulWidget {
-  final Doctors doctor;
-  final String date;
-  const PaymentPage({Key? key, required this.doctor, required this.date})
+  final Appointments date;
+  const PaymentPage({Key? key, required this.date})
       : super(key: key);
 
   @override
@@ -205,14 +204,12 @@ class _PaymentPageState extends State<PaymentPage> {
         .child(FirebaseAuth.instance.currentUser!.uid)
         .child(appointments);
 
+    widget.date.setPatientId(FirebaseAuth.instance.currentUser!.uid);
+    widget.date.setPatientName(FirebaseAuth.instance.currentUser!.uid);
+
     ref
         .push()
-        .update(Appointments(
-                date: widget.date,
-                paymentType: paymentType,
-                doctorName: widget.doctor.name!,
-                hospitalName: widget.doctor.specialist!,
-                completed: false)
+        .update(widget.date
             .toMap())
         .then((value) {
       showSuccessMessage(context, 'Your reservation done successfully');

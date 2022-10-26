@@ -49,7 +49,7 @@ class _HospitalInfoState extends State<HospitalInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: basicAppBar('Account'),
+      appBar: basicAppBarWithBck('Account'),
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(

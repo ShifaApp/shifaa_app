@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
+import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
 import '../../../dialogs/message_dialog.dart';
 import '../../../dialogs/progress_dialog.dart';
@@ -42,6 +43,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: basicAppBarWithBck('Add Doctor'),
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
@@ -51,10 +53,6 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.asset(
-                  'assests/shifa.png',
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
 
                 ////////////////////////////
 
@@ -67,11 +65,13 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                         await picker
                             .pickImage(source: ImageSource.gallery)
                             .then((value) {
-                          setState(() {
+                              if(value!=null) {
+                                setState(() {
                             pickedImage = value;
 
                             print(pickedImage!.name);
                           });
+                              }
                         });
                       },
                       child: Container(
@@ -249,7 +249,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
       ref
           .child(userCredential.user!.uid)
           .set(Doctors(
-                  image: imageUrl,
+                  image: imageUrl,id:userCredential.user!.uid ,
                   hospitalId:widget.hospitalId ,
                   email: emailController.value.text,
                   name: nameController.value.text,hospitalName: widget.hospital.name,

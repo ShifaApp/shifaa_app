@@ -11,6 +11,7 @@ import '../../../dialogs/snack_message.dart';
 import '../../../helpers/route_helper.dart';
 import '../../../models/Appointemnts.dart';
 import '../../../models/Doctors.dart';
+import '../../widget/text_field_class.dart';
 import 'doctor_dashboard.dart';
 
 class AddAppointment extends StatefulWidget {
@@ -25,6 +26,8 @@ class AddAppointment extends StatefulWidget {
 class _AddAppointmentState extends State<AddAppointment> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +60,14 @@ class _AddAppointmentState extends State<AddAppointment> {
                   ),
                 ),
               ),
+              textFieldStyle(
+                  context: context,
+                  edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                  lbTxt: 'Appointment Type ',
+                  controller: controller,
+                  textInputType: TextInputType.text,
+                  textInputAction: TextInputAction.go),
+
               lightBlueBtn('select date', const EdgeInsets.all(20),
                   () => _selectDate(context)),
               if (selectedDate != null && selectedTime != null)
@@ -104,6 +115,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                       FirebaseAuth.instance.currentUser!.uid,
                                   hospitalName: widget.doctors.hospitalName,
                                   doctorName: widget.doctors.name,
+                                  appointmentType: controller.value.text,
                                   completed: false)
                               .toMap())
                           .then((value) {

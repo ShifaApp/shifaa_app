@@ -27,6 +27,29 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
 
+  List <Appointments> appointmentsList=[];
+
+  late Appointments indexAppointment ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    DatabaseReference ref =
+    FirebaseDatabase.instance.reference().child(hospitals).child(widget.doctor.hospitalId!).child(widget.doctor.doctorId!);
+
+    ref.child(appointments)
+        .get()
+        .then((listAppointments) {
+      if(listAppointments.exists){
+
+        print(listAppointments.value.toString());
+      //  appointmentsList = listAppointments.value;
+
+      }
+
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,28 +163,57 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
               // lightBlueBtn('Reserve an Appointment date', const EdgeInsets.all(20), () => _selectDate(context)),
 
-              InkWell(
-                onTap: () => _selectDate(context),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.calendar_today,
-                        color: CustomColors.lightBlueColor,
-                        size: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Click to Reserve an Appointment date',
-                          maxLines: 2,
-                          style: TextStyle(fontSize: 16),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          color: CustomColors.lightBlueColor,
+                          size: 20,
                         ),
-                      ),
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Click to Reserve an Appointment date',
+                            maxLines: 2,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButtonFormField<Appointments>(
+                        value: appointmentsList.first,
+                        decoration: const InputDecoration.collapsed(hintText: ''),
+                        // icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: TextStyle(
+                            color: CustomColors.darkGrayColor,
+                        ),
+                        onChanged: (Appointments? newValue) {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+
+                            indexAppointment = newValue!;
+                          });
+
+                        },
+                        items: appointmentsList.map<DropdownMenuItem<Appointments>>((Appointments value) {
+                          return DropdownMenuItem<Appointments>(
+                            value: value,
+                            child: Text('${value.date!}, ${value.paymentType!}'),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  )
+                ],
               ),
               if (selectedDate != null && selectedTime != null)
                 Column(
@@ -200,8 +252,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           isScrollControlled: true,
                           builder: (BuildContext context) {
                             return PaymentPage(
-                              doctor: widget.doctor,
-                              date: date,
+                              date: indexAppointment,
                             );
                           });
                     })
