@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/models/Appointemnts.dart';
+import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor/appointment_details.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor/doctor_info.dart';
 
@@ -14,7 +15,8 @@ import '../../widget/app_bar_design.dart';
 import 'add_appointement.dart';
 
 class DoctorDashboard extends StatefulWidget {
-  const DoctorDashboard({Key? key}) : super(key: key);
+  final Doctors doctors;
+  const DoctorDashboard({Key? key,required this.doctors}) : super(key: key);
 
   @override
   State<DoctorDashboard> createState() => _DoctorDashboardState();
@@ -47,8 +49,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const AddAppointment(
-                      //  hospitalId: FirebaseAuth.instance.currentUser!.uid,
+                  builder: (context) =>  AddAppointment(
+                       doctors: widget.doctors,
                       )));
         } else if (value == 2) {
           FirebaseAuth.instance.signOut().then((value) {
@@ -74,7 +76,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return AppointmentDetails(
-                    appointments: appointments,
+                    appointments: appointments,doctors: widget.doctors,
                   );
                 }));
               },

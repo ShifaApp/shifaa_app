@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/dialogs/snack_message.dart';
+import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Recipe.dart';
 import 'package:shifa_app_flutter/screen/widget/buttons_class.dart';
 import 'package:shifa_app_flutter/screen/widget/text_field_class.dart';
@@ -11,10 +12,12 @@ import '../../../design/color.dart';
 import '../../../helpers/route_helper.dart';
 import '../../../models/Appointemnts.dart';
 import '../../widget/app_bar_design.dart';
+import 'doctor_dashboard.dart';
 
 class AddRecipe extends StatefulWidget {
   final Appointments appointments;
-  const AddRecipe({Key? key, required this.appointments}) : super(key: key);
+  final Doctors doctors;
+  const AddRecipe({Key? key, required this.appointments,required this.doctors}) : super(key: key);
 
   @override
   State<AddRecipe> createState() => _AddRecipeState();
@@ -47,7 +50,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     child: Text(
                       widget.appointments.date ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   )
                 ],
@@ -67,7 +70,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     child: Text(
                       widget.appointments.appointmentType ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   )
                 ],
@@ -87,7 +90,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     child: Text(
                       widget.appointments.patientName ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   ),
                 ],
@@ -114,7 +117,7 @@ class _AddRecipeState extends State<AddRecipe> {
                       .reference()
                       .child(users)
                       .child(widget.appointments.patientId!)
-                      .child(appointments);
+                      .child(recipes);
                   ref
                       .push()
                       .update(Recipe(
@@ -130,7 +133,9 @@ class _AddRecipeState extends State<AddRecipe> {
                           .toMap())
                       .then((value) {
                     showSuccessMessage(context, 'Recipe added successfully');
-                    moveToNewStack(context, doctorDashBoardRoute);
+                    moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
+                      return DoctorDashboard(doctors:widget.doctors);
+                    }));
                   });
                 } else {
                   showSuccessMessage(context, 'Something Error happend');

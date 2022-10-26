@@ -17,7 +17,8 @@ import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
 
 class HospitalInfo extends StatefulWidget {
-  const HospitalInfo({Key? key}) : super(key: key);
+  final Hospitals hospitals;
+  const HospitalInfo({Key? key,required this.hospitals}) : super(key: key);
 
   @override
   State<HospitalInfo> createState() => _HospitalInfoState();
@@ -36,23 +37,13 @@ class _HospitalInfoState extends State<HospitalInfo> {
   @override
   void initState() {
     super.initState();
-    DatabaseReference ref =
-    FirebaseDatabase.instance.reference().child(hospitals);
 
-    ref
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .get()
-        .then((hospital) {
-      if(hospital.exists){
-        Hospitals myUser = Hospitals.fromJson(hospital.value);
-        nameController.text = myUser.name ?? ' ';
-        addressController.text = myUser.address ?? ' ';
-        emailController.text = myUser.email ?? ' ';
-        phoneController.text = myUser.phone ?? ' ';
-        imageUrl = myUser.email ?? ' ';
-      }
 
-    });
+        nameController.text = widget.hospitals.name ?? ' ';
+        addressController.text =  widget.hospitals.address ?? ' ';
+        emailController.text =  widget.hospitals.email ?? ' ';
+        phoneController.text =  widget.hospitals.phone ?? ' ';
+        imageUrl =  widget.hospitals.email ?? ' ';
 
   }
   @override

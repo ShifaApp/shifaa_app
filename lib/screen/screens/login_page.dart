@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:shifa_app_flutter/models/user.dart';
+import 'package:shifa_app_flutter/screen/screens/dashboard_page.dart';
+import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
 
 import '../../const/route_constants.dart';
 import '../../dialogs/message_dialog.dart';
@@ -36,11 +38,14 @@ class _LogInPageState extends State<LogInPage> {
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset(
-                'assests/shifa.png',
-                height: MediaQuery.of(context).size.height / 4,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  'assests/shifa.png',
+                  height: MediaQuery.of(context).size.height / 4,
+                ),
               ),
               // Text(
               //   'Log In'.toUpperCase(),
@@ -75,50 +80,73 @@ class _LogInPageState extends State<LogInPage> {
                     continueLogin();
                   }),
                   GestureDetector(
-                    onTap: () {
-                      moveToNewStack(context, registerHospitalRoute);
-                    },
-                    child: Text('Register as Hospital',
-                        style: TextStyle(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account ? ",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
                             color: CustomColors.lightBlueColor,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800)),
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          'Sign Up',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: CustomColors.lightBlueColor,
+                            fontSize: 14,
+                          ),
+                        )
+                        ///////////////
+                        ,
+                      ],
+                    ),
+                    onTap: () {
+                      moveToNewStack(context, signupRoute);
+                    },
                   ),
                 ],
-              ),
+              )
+         ,
+
               const SizedBox(
-                height: 50,
+                height: 70,
               )
               //////////////////////////////////////////
               ,
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
                   children: [
-                    Text(
-                      "Don't have an account ? ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
+                    GestureDetector(
+                      onTap: () {
+                        moveToNewStack(context, registerHospitalRoute);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Register as Hospital',
+                            style: TextStyle(
+                                color: CustomColors.lightBlueColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800)),
                       ),
                     ),
-                    Text(
-                      'Sign Up',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
-                      ),
-                    )
-                    ///////////////
-                    ,
+                    GestureDetector(
+                      onTap: () {
+                        moveToNewStack(context, registerHospitalRoute);
+                      },
+                      child: Text('Log in  as Doctor',
+                          style: TextStyle(
+                              color: CustomColors.lightBlueColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800)),
+                    ),
                   ],
                 ),
-                onTap: () {
-                  moveToNewStack(context, signupRoute);
-                },
               ),
+
             ],
           ),
         ),
@@ -165,15 +193,18 @@ class _LogInPageState extends State<LogInPage> {
       ref.child(users).child(userCredential.user!.uid).get().then((value) {
         if (value.exists) {
           print(value.value);
-          MyUser myUser = MyUser.fromJson(value.value);
-          moveToNewStack(context, dashBoardRoute);
+
+          moveToNewStackWithArgs(context,MaterialPageRoute(builder: (context) {
+            return DashboardPage(myUser:  MyUser.fromJson(value.value));
+          }));
         } else {
           ref.child(hospitals).child(userCredential.user!.uid);
           ref.get().then((value) {
             if (value.exists) {
-              print(value.value);
               print('Hospital + ${Hospitals.fromJson(value.value)}');
-              moveToNewStack(context, hospitalDashBoardRoute);
+              moveToNewStackWithArgs(context,MaterialPageRoute(builder: (context) {
+                return HospitalDashboard(hospitals: Hospitals.fromJson(value.value));
+              }));
             }
           });
         }

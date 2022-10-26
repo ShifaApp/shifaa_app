@@ -6,6 +6,7 @@ import 'package:shifa_app_flutter/screen/screens/login_page.dart';
 import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
 
 import '../screen/screens/dashboard_page.dart';
+import '../screen/screens/doctor/login_doctor.dart';
 
 
 const String homeRoute = "home";
@@ -23,19 +24,19 @@ const String mainRoute = "mainRoute";
 const String dashBoardRoute = "dashBoard";
 const String registerHospitalRoute = "registerHospital";
 const String hospitalDashBoardRoute = "hospitalDashBoard";
-const String doctorDashBoardRoute = "doctorDashBoard";
+//const String doctorDashBoardRoute = "doctorDashBoard";
 
+const String doctorLoginRoute = "doctorLogin";
 
 final Map<String, WidgetBuilder> routMap = {
-   doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
-   hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
+  // doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
+  // hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
 
    registerHospitalRoute: (BuildContext context) => const RegisterHospital(),
    loginRoute: (BuildContext context) => const LogInPage(),
    signupRoute: (BuildContext context) => const SignUpPage(),
-   hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
-   dashBoardRoute: (BuildContext context) => const DashboardPage(),
- //  languageRoute: (BuildContext context) => const LanguagePage(),
+
+   doctorLoginRoute: (BuildContext context) => const LoginDoctor(),
 
 
 };

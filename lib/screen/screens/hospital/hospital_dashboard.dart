@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
+import 'package:shifa_app_flutter/models/Hospitals.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor_details.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/edit_hospital_info.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_doctor.dart';
@@ -14,7 +15,8 @@ import '../../../helpers/route_helper.dart';
 import '../../widget/app_bar_design.dart';
 
 class HospitalDashboard extends StatefulWidget {
-  const HospitalDashboard({Key? key}) : super(key: key);
+  final Hospitals hospitals;
+  const HospitalDashboard({Key? key,required this.hospitals}) : super(key: key);
 
   @override
   State<HospitalDashboard> createState() => _HospitalDashboardState();
@@ -42,13 +44,13 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
       }, (value) {
         if (value == 0) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HospitalInfo()));
+              MaterialPageRoute(builder: (context) =>  HospitalInfo(hospitals: widget.hospitals,)));
         } else if (value == 1) {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => RegisterDoctor(
-                        hospitalId: FirebaseAuth.instance.currentUser!.uid,
+                        hospitalId: FirebaseAuth.instance.currentUser!.uid,hospital: widget.hospitals,
                       )));
         } else if (value == 2) {
           FirebaseAuth.instance.signOut().then((value) {

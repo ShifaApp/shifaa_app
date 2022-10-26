@@ -10,9 +10,13 @@ import '../../../const/const.dart';
 import '../../../dialogs/snack_message.dart';
 import '../../../helpers/route_helper.dart';
 import '../../../models/Appointemnts.dart';
+import '../../../models/Doctors.dart';
+import 'doctor_dashboard.dart';
 
 class AddAppointment extends StatefulWidget {
-  const AddAppointment({Key? key}) : super(key: key);
+  final Doctors doctors;
+
+  const AddAppointment({Key? key, required this.doctors}) : super(key: key);
 
   @override
   State<AddAppointment> createState() => _AddAppointmentState();
@@ -88,7 +92,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                       DatabaseReference ref = FirebaseDatabase.instance
                           .reference()
                           .child(hospitals)
-                       //   .child()
+                          .child(widget.doctors.hospitalId!)
                           .child(doctors)
                           .child(FirebaseAuth.instance.currentUser!.uid);
                       ref
@@ -98,14 +102,17 @@ class _AddAppointmentState extends State<AddAppointment> {
                                       "${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}",
                                   doctorId:
                                       FirebaseAuth.instance.currentUser!.uid,
-                            //      hospitalName: widget.doctor.specialist!,
-                              //    doctorName: ,
+                                  hospitalName: widget.doctors.hospitalName,
+                                  doctorName: widget.doctors.name,
                                   completed: false)
                               .toMap())
                           .then((value) {
                         showSuccessMessage(
                             context, 'Your Appointment added  successfully');
-                        moveToNewStack(context, doctorDashBoardRoute);
+                        moveToNewStackWithArgs(context,
+                            MaterialPageRoute(builder: (context) {
+                          return DoctorDashboard(doctors: widget.doctors);
+                        }));
                       });
                     })
                   ],

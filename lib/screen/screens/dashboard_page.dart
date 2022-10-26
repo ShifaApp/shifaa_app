@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
+import 'package:shifa_app_flutter/models/user.dart';
 import 'package:shifa_app_flutter/screen/screens/appointements_page.dart';
 import 'package:shifa_app_flutter/screen/screens/home_page.dart';
 import 'package:shifa_app_flutter/screen/screens/setting_page.dart';
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  final MyUser myUser;
+  const DashboardPage({Key? key,required this.myUser}) : super(key: key);
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();

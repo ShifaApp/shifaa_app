@@ -6,9 +6,12 @@ import 'package:shifa_app_flutter/screen/screens/doctor/add_recipe.dart';
 import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 import 'package:shifa_app_flutter/screen/widget/buttons_class.dart';
 
+import '../../../models/Doctors.dart';
+
 class AppointmentDetails extends StatefulWidget {
   final Appointments appointments;
-  const AppointmentDetails({Key? key, required this.appointments})
+  final Doctors doctors;
+  const AppointmentDetails({Key? key, required this.appointments,required this.doctors})
       : super(key: key);
 
   @override
@@ -115,7 +118,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
               if (closeAppointment)
                 lightBlueBtn('Add Recipe ', const EdgeInsets.all(20), () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return  AddRecipe(appointments: widget.appointments,);
+                    return  AddRecipe(appointments: widget.appointments,doctors: widget.doctors,);
                   }));
                 }),
             ],

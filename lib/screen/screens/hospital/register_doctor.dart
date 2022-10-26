@@ -11,6 +11,7 @@ import 'package:shifa_app_flutter/design/color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
+import 'package:shifa_app_flutter/models/Hospitals.dart';
 
 import '../../../dialogs/message_dialog.dart';
 import '../../../dialogs/progress_dialog.dart';
@@ -19,8 +20,9 @@ import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
 
 class RegisterDoctor extends StatefulWidget {
+  final Hospitals hospital;
   final String hospitalId;
-  const RegisterDoctor({Key? key, required this.hospitalId}) : super(key: key);
+  const RegisterDoctor({Key? key, required this.hospital,required this.hospitalId}) : super(key: key);
 
   @override
   State<RegisterDoctor> createState() => _RegisterDoctorState();
@@ -250,7 +252,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                   image: imageUrl,
                   hospitalId:widget.hospitalId ,
                   email: emailController.value.text,
-                  name: nameController.value.text,
+                  name: nameController.value.text,hospitalName: widget.hospital.name,
                   fees: feesController.value.text,
                   specialist: majorController.value.text,
                   phone: phoneController.value.text)
