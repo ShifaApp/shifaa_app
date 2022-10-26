@@ -19,7 +19,7 @@ class _DashboardPageState extends State<DashboardPage> {
   late bool branchStatus;
   final PageStorageBucket bucket = PageStorageBucket();
   final List<Widget> screens = [
-    const HomePage(),
+   const  HomePage(),
     const AppointmentsPage(),
     const SettingPage(),
   ];
@@ -70,7 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onPressed: () {
                   setState(() {
                     //ishasbranch could be set to false later
-                    currentScreen = const HomePage();
+                    currentScreen =  HomePage(myUser:widget.myUser);
                     currentTab = 0;
                   });
                 },

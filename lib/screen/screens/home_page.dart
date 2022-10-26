@@ -7,10 +7,13 @@ import 'package:shifa_app_flutter/models/Hospitals.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital_details.dart';
 
 import '../../const/const.dart';
+import '../../models/user.dart';
 import '../widget/app_bar_design.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final MyUser? myUser;
+
+  const HomePage({Key? key, this.myUser}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -33,7 +36,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return HospitalDetails(
-                    hospital: hospital,
+                    hospital: hospital,myUser: widget.myUser!,
                   );
                 }));
               },

@@ -5,10 +5,13 @@ import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
 import '../../design/color.dart';
 import '../../helpers/contact_helper.dart';
+import '../../models/user.dart';
 
 class HospitalDetails extends StatefulWidget {
   final Hospitals hospital;
-  const HospitalDetails({Key? key, required this.hospital}) : super(key: key);
+  final MyUser myUser;
+
+  const HospitalDetails({Key? key, required this.hospital,required this.myUser}) : super(key: key);
 
   @override
   State<HospitalDetails> createState() => _HospitalDetailsState();
@@ -128,6 +131,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                         Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return DoctorDetails(
+                          myUser: widget.myUser,
                           doctor: widget.hospital.doctors![index],
                         );
                       }));

@@ -17,7 +17,9 @@ import '../widget/app_bar_design.dart';
 
 class DoctorDetails extends StatefulWidget {
   final Doctors doctor;
-  const DoctorDetails({Key? key, required this.doctor}) : super(key: key);
+  final MyUser? myUser;
+
+  const DoctorDetails({Key? key, required this.doctor, this.myUser}) : super(key: key);
 
   @override
   State<DoctorDetails> createState() => _DoctorDetailsState();
@@ -252,6 +254,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           isScrollControlled: true,
                           builder: (BuildContext context) {
                             return PaymentPage(
+                              myUser: widget.myUser!,
                               date: indexAppointment,
                             );
                           });

@@ -10,12 +10,15 @@ import '../../dialogs/snack_message.dart';
 import '../../helpers/route_helper.dart';
 import '../../models/Appointemnts.dart';
 import '../../models/Doctors.dart';
+import '../../models/user.dart';
 import '../widget/buttons_class.dart';
 import '../widget/text_field_class.dart';
 
 class PaymentPage extends StatefulWidget {
   final Appointments date;
-  const PaymentPage({Key? key, required this.date})
+  final MyUser myUser;
+
+  const PaymentPage({Key? key, required this.date,required this.myUser})
       : super(key: key);
 
   @override
@@ -205,7 +208,7 @@ class _PaymentPageState extends State<PaymentPage> {
         .child(appointments);
 
     widget.date.setPatientId(FirebaseAuth.instance.currentUser!.uid);
-    widget.date.setPatientName(FirebaseAuth.instance.currentUser!.uid);
+    widget.date.setPatientName(widget.myUser.name);
 
     ref
         .push()
