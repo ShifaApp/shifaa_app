@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:shifa_app_flutter/dialogs/progress_dialog.dart';
+import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
 import '../../const/const.dart';
 import '../../const/route_constants.dart';
@@ -48,6 +49,7 @@ class _MyInfoState extends State<MyInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: basicAppBarWithBck('My Information'),
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
@@ -55,24 +57,10 @@ class _MyInfoState extends State<MyInfo> {
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      color: CustomColors.purpleColor,
-                      iconSize: 30,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ),
-              ),
+
               ////////////////////////////
 
+              const SizedBox(height: 20,),
               textFieldStyle(
                   context: context,
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),

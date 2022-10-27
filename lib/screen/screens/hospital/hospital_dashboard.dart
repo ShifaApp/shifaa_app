@@ -4,6 +4,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
+import 'package:shifa_app_flutter/screen/screens/doctor/login_doctor.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor_details.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/edit_hospital_info.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_doctor.dart';
@@ -15,14 +16,32 @@ import '../../../helpers/route_helper.dart';
 import '../../widget/app_bar_design.dart';
 
 class HospitalDashboard extends StatefulWidget {
-  final Hospitals hospitals;
-  const HospitalDashboard({Key? key,required this.hospitals}) : super(key: key);
+  const HospitalDashboard({Key? key}) : super(key: key);
 
   @override
   State<HospitalDashboard> createState() => _HospitalDashboardState();
 }
 
 class _HospitalDashboardState extends State<HospitalDashboard> {
+  late Hospitals? hospital;
+  String hospitalId = '';
+  @override
+  void initState() {
+    super.initState();
+
+    DatabaseReference ref =
+        FirebaseDatabase.instance.reference().child(hospitals);
+
+    ref.child(Const.currentUserId).get().then((h) {
+      if (h.exists) {
+        hospital = Hospitals.fromJson(h.value);
+        setState(() {
+          hospitalId = hospital!.hospitalId!;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,21 +57,24 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
           ),
           const PopupMenuItem<int>(
             value: 2,
+            child: Text("Login Doctor"),
+          ),
+          const PopupMenuItem<int>(
+            value: 3,
             child: Text("Logout"),
           ),
         ];
       }, (value) {
         if (value == 0) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  HospitalInfo(hospitals: widget.hospitals,)));
+              MaterialPageRoute(builder: (context) => const HospitalInfo()));
         } else if (value == 1) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RegisterDoctor(
-                        hospitalId: FirebaseAuth.instance.currentUser!.uid,hospital: widget.hospitals,
-                      )));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const RegisterDoctor()));
         } else if (value == 2) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginDoctor()));
+        } else if (value == 3) {
           FirebaseAuth.instance.signOut().then((value) {
             moveToNewStack(context, loginRoute);
           });
@@ -62,12 +84,13 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
         query: FirebaseDatabase.instance
             .reference()
             .child(hospitals)
-            .child(FirebaseAuth.instance.currentUser!.uid)
+            .child(Const.currentUserId)
             .child(doctors),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
           if (snapshot.exists && snapshot.value != null) {
-            Doctors doctor = Doctors.fromJson(snapshot.value);
+            Map<dynamic, dynamic> map = snapshot.value as Map<dynamic, dynamic>  ;
+            Doctors doctor = Doctors.fromJson(map);
 
             //list item design
             return InkWell(

@@ -150,7 +150,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               if (isCashSelected) cashInfo(),
@@ -202,21 +202,28 @@ class _PaymentPageState extends State<PaymentPage> {
 
   void confirmAppointment() {
     DatabaseReference ref = FirebaseDatabase.instance
-        .reference()
-        .child(users)
-        .child(FirebaseAuth.instance.currentUser!.uid)
+        .reference();
+    final userQuery =  ref.child(users)
+        .child(Const.currentUserId)
+        .child(appointments);
+
+       final doctorQuery =  ref.child(hospitals)
+        .child(widget.date.hospitalId!).child(widget.date.doctorId!)
         .child(appointments);
 
     widget.date.setPatientId(FirebaseAuth.instance.currentUser!.uid);
     widget.date.setPatientName(widget.myUser.name);
 
-    ref
-        .push()
+
+    doctorQuery  .push()
         .update(widget.date
             .toMap())
         .then((value) {
-      showSuccessMessage(context, 'Your reservation done successfully');
-      moveToNewStack(context, dashBoardRoute);
+
+          userQuery.push().update(widget.date.toMap()).then((value) {
+            showSuccessMessage(context, 'Your reservation done successfully');
+            moveToNewStack(context, dashBoardRoute);
+          });
     });
   }
 

@@ -16,8 +16,8 @@ import 'doctor_dashboard.dart';
 
 class AddRecipe extends StatefulWidget {
   final Appointments appointments;
-  final Doctors doctors;
-  const AddRecipe({Key? key, required this.appointments,required this.doctors}) : super(key: key);
+
+  const AddRecipe({Key? key, required this.appointments}) : super(key: key);
 
   @override
   State<AddRecipe> createState() => _AddRecipeState();
@@ -134,7 +134,7 @@ class _AddRecipeState extends State<AddRecipe> {
                       .then((value) {
                     showSuccessMessage(context, 'Recipe added successfully');
                     moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
-                      return DoctorDashboard(doctors:widget.doctors);
+                      return DoctorDashboard();
                     }));
                   });
                 } else {

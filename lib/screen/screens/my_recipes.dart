@@ -19,10 +19,10 @@ class _MyRecipesState extends State<MyRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: basicAppBar('My Recipes'),
+      appBar: basicAppBarWithBck('My Recipes'),
       body: FirebaseAnimatedList(
         query: FirebaseDatabase.instance.reference().child(users)
-          .child(FirebaseAuth.instance.currentUser!.uid)
+          .child(Const.currentUserId)
           .child(recipes),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {

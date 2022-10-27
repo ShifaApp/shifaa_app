@@ -10,8 +10,7 @@ import '../../../models/Doctors.dart';
 
 class AppointmentDetails extends StatefulWidget {
   final Appointments appointments;
-  final Doctors doctors;
-  const AppointmentDetails({Key? key, required this.appointments,required this.doctors})
+  const AppointmentDetails({Key? key, required this.appointments})
       : super(key: key);
 
   @override
@@ -118,7 +117,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
               if (closeAppointment)
                 lightBlueBtn('Add Recipe ', const EdgeInsets.all(20), () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return  AddRecipe(appointments: widget.appointments,doctors: widget.doctors,);
+                    return  AddRecipe(appointments: widget.appointments);
                   }));
                 }),
             ],

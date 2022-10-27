@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shifa_app_flutter/dialogs/progress_dialog.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
 import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
@@ -17,8 +18,9 @@ import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
 
 class HospitalInfo extends StatefulWidget {
-  final Hospitals hospitals;
-  const HospitalInfo({Key? key,required this.hospitals}) : super(key: key);
+  const HospitalInfo({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HospitalInfo> createState() => _HospitalInfoState();
@@ -32,20 +34,30 @@ class _HospitalInfoState extends State<HospitalInfo> {
 
   bool isBtnEnabled = true;
   XFile? pickedImage;
+  late Hospitals? hospital;
 
-  String imageUrl ='';
+  String imageUrl = '';
   @override
   void initState() {
     super.initState();
 
+    DatabaseReference ref =
+        FirebaseDatabase.instance.reference().child(hospitals);
 
-        nameController.text = widget.hospitals.name ?? ' ';
-        addressController.text =  widget.hospitals.address ?? ' ';
-        emailController.text =  widget.hospitals.email ?? ' ';
-        phoneController.text =  widget.hospitals.phone ?? ' ';
-        imageUrl =  widget.hospitals.email ?? ' ';
-
+    ref.child(Const.currentUserId).get().then((h) {
+      if (h.exists) {
+        hospital = Hospitals.fromJson(h.value);
+        nameController.text = hospital!.name ?? ' ';
+        addressController.text = hospital!.address ?? ' ';
+        emailController.text = hospital!.email ?? ' ';
+        phoneController.text = hospital!.phone ?? ' ';
+        setState(() {
+          imageUrl = hospital!.image ?? ' ';
+        });
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +71,6 @@ class _HospitalInfoState extends State<HospitalInfo> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
-
                 ////////////////////////////
 
                 InkWell(
@@ -88,8 +98,8 @@ class _HospitalInfoState extends State<HospitalInfo> {
                         padding: const EdgeInsets.all(8.0),
                         child: pickedImage != null
                             ? Image.file(
-                          File(pickedImage!.path),
-                        )
+                                File(pickedImage!.path),
+                              )
                             : Image.network(imageUrl)),
                   ),
                 ),
@@ -123,18 +133,16 @@ class _HospitalInfoState extends State<HospitalInfo> {
                     textInputAction: TextInputAction.done),
 
                 lightBlueBtn(
-                    'Continue', const EdgeInsets.only(bottom: 10, top: 10),
-                        () {
-                      continueSignUp();
+                    'Continue', const EdgeInsets.only(bottom: 10, top: 10), () {
+                  continueSignUp();
 
-                      //
-                    }),
+                  //
+                }),
                 const SizedBox(
                   height: 50,
                 )
                 //////////////////////////////////////////
                 ,
-
               ],
             ),
           ),
@@ -144,8 +152,7 @@ class _HospitalInfoState extends State<HospitalInfo> {
   }
 
   void continueSignUp() {
-
-    if(pickedImage != null){
+    if (pickedImage != null) {
       var storageRef = FirebaseStorage.instance.ref().child("images");
       storageRef.putFile(File(pickedImage!.path)).whenComplete(() async {
         var url = await storageRef.getDownloadURL();
@@ -155,21 +162,20 @@ class _HospitalInfoState extends State<HospitalInfo> {
       });
     }
     DatabaseReference ref =
-    FirebaseDatabase.instance.reference().child(hospitals);
+        FirebaseDatabase.instance.reference().child(hospitals);
 
     ref
-        .child(FirebaseAuth.instance.currentUser!.uid)
+        .child(Const.currentUserId)
         .update(Hospitals(
-        email: emailController.value.text,
-        name: nameController.value.text,
-        phone: phoneController.value.text,image: imageUrl,
-        address: addressController.value.text)
-        .toMap())
+                email: emailController.value.text,
+                name: nameController.value.text,
+                phone: phoneController.value.text,
+                image: imageUrl,
+                address: addressController.value.text)
+            .toMap())
         .then((value) {
       showSuccessMessage(context, 'Your info updated successfully');
       moveToNewStack(context, hospitalDashBoardRoute);
     });
   }
-
-
 }

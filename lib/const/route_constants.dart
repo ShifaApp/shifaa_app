@@ -30,7 +30,7 @@ const String doctorLoginRoute = "doctorLogin";
 
 final Map<String, WidgetBuilder> routMap = {
   // doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
-  // hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
+   hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
 
    registerHospitalRoute: (BuildContext context) => const RegisterHospital(),
    loginRoute: (BuildContext context) => const LogInPage(),

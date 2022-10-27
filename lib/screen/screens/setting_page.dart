@@ -65,22 +65,18 @@ class _SettingPageState extends State<SettingPage> {
               profileListDesign('My Information', Icons.account_circle_outlined,
                   onPressed: () {
                 // if(user !=null) {
-                showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return const MyInfo();
-                    });
+                    }));
+
               }),
               profileListDesign('My Recipes', Icons.contact_page_outlined,
                   onPressed: () {
                 // if(user !=null) {
-                showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return const MyRecipes();
-                    });
+                    }));
+
               }),
 
               profileListDesign('Sign Out', Icons.arrow_back, onPressed: () {

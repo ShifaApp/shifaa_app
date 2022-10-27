@@ -24,7 +24,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
         query: FirebaseDatabase.instance
             .reference()
             .child(users)
-            .child(FirebaseAuth.instance.currentUser!.uid)
+            .child(Const.currentUserId)
             .child(appointments),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
@@ -46,11 +46,11 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Row(
                       children: [
                         Text(
-                          'Appointment date: ',
+                          'Appointment date:',
                           style: TextStyle(
                               fontWeight: FontWeight.w800,
                               color: CustomColors.primaryBlackColor),
@@ -59,7 +59,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                           appointments.date!,
                           maxLines: 2,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w800,
                               color: CustomColors.lightBlueColor),
                         ),
@@ -67,7 +67,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Row(
                       children: [
                         Text(
@@ -87,17 +87,17 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Row(
                       children: [
                         Text(
-                          'Hospital Name: ',
+                          'Appointment Type: ',
                           style: TextStyle(
                               fontWeight: FontWeight.w800,
                               color: CustomColors.primaryBlackColor),
                         ),
                         Text(
-                          appointments.hospitalName!,
+                          appointments.appointmentType ?? ' ',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w800,

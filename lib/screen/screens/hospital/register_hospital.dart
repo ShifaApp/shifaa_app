@@ -8,7 +8,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shifa_app_flutter/dialogs/snack_message.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
+import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_doctor.dart';
 
 import '../../../const/route_constants.dart';
@@ -41,7 +43,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: basicAppBarWithBck('Register Hospital'),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,8 +52,6 @@ class _RegisterHospitalState extends State<RegisterHospital> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
-
                 ////////////////////////////
 
                 Column(
@@ -243,34 +243,43 @@ class _RegisterHospitalState extends State<RegisterHospital> {
               password: passController.value.text);
 
       //save image in storage
-      var storageRef = FirebaseStorage.instance.ref().child("images");
+      var storageRef = FirebaseStorage.instance.ref().child("images").child(pickedImage!.path);
       storageRef.putFile(File(pickedImage!.path)).whenComplete(() async {
         var url = await storageRef.getDownloadURL();
         imageUrl = url.toString();
+        // save data in database
+        DatabaseReference ref =
+            FirebaseDatabase.instance.reference().child(hospitals);
+
+        ref
+            .child(userCredential.user!.uid)
+            .set(Hospitals(
+                    image: imageUrl,
+                    email: emailController.value.text,
+                    name: nameController.value.text,
+                    address: addressController.value.text,
+                    accepted: false,
+                    phone: phoneController.value.text)
+                .toMap())
+            .then((value) {
+              showSuccessMessage(context, 'Welcome ${nameController.value.text}');
+          moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
+            return const HospitalDashboard();
+          }));
+        });
       }).catchError((onError) {
         print(onError);
       });
-      // save data in database
-      DatabaseReference ref =
-          FirebaseDatabase.instance.reference().child(hospitals);
-
-      ref
-          .child(userCredential.user!.uid)
-          .set(Hospitals(
-                  image: imageUrl,
-                  email: emailController.value.text,
-                  name: nameController.value.text,
-                  address: addressController.value.text,
-                  phone: phoneController.value.text)
-              .toMap())
-          .then((value) {
-        moveToNewStack(context, hospitalDashBoardRoute);
-      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        Navigator.pop(context);
+
+        showSuccessMessage(context, 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        Navigator.pop(context);
+
+        showSuccessMessage(
+            context, 'The account already exists for that email.');
       }
     } catch (e) {
       print(e);

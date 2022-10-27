@@ -15,9 +15,9 @@ import '../../widget/text_field_class.dart';
 import 'doctor_dashboard.dart';
 
 class AddAppointment extends StatefulWidget {
-  final Doctors doctors;
-
-  const AddAppointment({Key? key, required this.doctors}) : super(key: key);
+  // final Doctors doctors;
+  //
+  // const AddAppointment({Key? key, required this.doctors}) : super(key: key);
 
   @override
   State<AddAppointment> createState() => _AddAppointmentState();
@@ -27,6 +27,11 @@ class _AddAppointmentState extends State<AddAppointment> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   final TextEditingController controller = TextEditingController();
+  //late Doctors doctor;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +52,19 @@ class _AddAppointmentState extends State<AddAppointment> {
                         color: CustomColors.lightBlueColor,
                         size: 20,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Pick Date and time you will be free at them ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: CustomColors.primaryBlackColor),
-                        ),
+                      Text(
+                        ' click here to Pick Date and time, \n  you will be free at them ',
+                        style: TextStyle(
+                            fontSize: 16,
+                            wordSpacing: 2,
+                            color: CustomColors.primaryBlackColor),
                       ),
                     ],
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               textFieldStyle(
                   context: context,
@@ -67,9 +73,6 @@ class _AddAppointmentState extends State<AddAppointment> {
                   controller: controller,
                   textInputType: TextInputType.text,
                   textInputAction: TextInputAction.go),
-
-              lightBlueBtn('select date', const EdgeInsets.all(20),
-                  () => _selectDate(context)),
               if (selectedDate != null && selectedTime != null)
                 Column(
                   children: [
@@ -100,31 +103,45 @@ class _AddAppointmentState extends State<AddAppointment> {
                     ),
                     lightBlueBtn(
                         'Confirm Appointment', const EdgeInsets.all(20), () {
-                      DatabaseReference ref = FirebaseDatabase.instance
-                          .reference()
+                      DatabaseReference ref =
+                          FirebaseDatabase.instance.reference();
+                      final query = ref
                           .child(hospitals)
-                          .child(widget.doctors.hospitalId!)
-                          .child(doctors)
-                          .child(FirebaseAuth.instance.currentUser!.uid);
-                      ref
-                          .push()
-                          .update(Appointments(
-                                  date:
-                                      "${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}",
-                                  doctorId:
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                  hospitalName: widget.doctors.hospitalName,
-                                  doctorName: widget.doctors.name,
-                                  appointmentType: controller.value.text,
-                                  completed: false)
-                              .toMap())
-                          .then((value) {
-                        showSuccessMessage(
-                            context, 'Your Appointment added  successfully');
-                        moveToNewStackWithArgs(context,
-                            MaterialPageRoute(builder: (context) {
-                          return DoctorDashboard(doctors: widget.doctors);
-                        }));
+                          .child(Const.currentUserId)
+                          .child(doctors);
+
+                      query.child(Const.doctorId).get().then((h) {
+                        if (h.exists) {
+                          print(h.value);
+                          final Doctors doctor = Doctors.fromJson(h.value );
+
+                          final addQuery = ref
+                              .child(hospitals)
+                              .child(Const.currentUserId)
+                              .child(doctors)
+                              .child(Const.doctorId)
+                              .child(appointments);
+                          addQuery
+                              .push()
+                              .update(Appointments(
+                                      date:
+                                          "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year} ${selectedTime!.hour}:${selectedTime!.minute} ${selectedTime!.period.name}",
+                                      doctorId: Const.doctorId,
+                                      hospitalId: doctor.hospitalId,
+                                      hospitalName: doctor.hospitalName,
+                                      doctorName: doctor.name,
+                                      appointmentType: controller.value.text,
+                                      completed: false)
+                                  .toMap())
+                              .then((value) {
+                            showSuccessMessage(context,
+                                'Your Appointment added  successfully');
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const DoctorDashboard();
+                            }));
+                          });
+                        }
                       });
                     })
                   ],

@@ -9,6 +9,7 @@ import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/const/route_constants.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shifa_app_flutter/dialogs/snack_message.dart';
 import 'package:shifa_app_flutter/helpers/route_helper.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
@@ -19,11 +20,10 @@ import '../../../dialogs/progress_dialog.dart';
 import '../../../helpers/info_helper.dart';
 import '../../widget/buttons_class.dart';
 import '../../widget/text_field_class.dart';
+import 'hospital_dashboard.dart';
 
 class RegisterDoctor extends StatefulWidget {
-  final Hospitals hospital;
-  final String hospitalId;
-  const RegisterDoctor({Key? key, required this.hospital,required this.hospitalId}) : super(key: key);
+  const RegisterDoctor({Key? key}) : super(key: key);
 
   @override
   State<RegisterDoctor> createState() => _RegisterDoctorState();
@@ -39,12 +39,32 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
 
   bool isBtnEnabled = true;
   XFile? pickedImage;
+  late Hospitals? hospital;
+  String hospitalName = '',hospitalId = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    DatabaseReference ref =
+        FirebaseDatabase.instance.reference().child(hospitals);
+
+    ref.child(Const.currentUserId).get().then((h) {
+      if (h.exists) {
+        hospital = Hospitals.fromJson(h.value);
+        setState(() {
+          hospitalName = hospital!.name!;
+          hospitalId = hospital!.hospitalId!;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: basicAppBarWithBck('Add Doctor'),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: CustomColors.primaryWhiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -53,7 +73,6 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
                 ////////////////////////////
 
                 Column(
@@ -65,13 +84,13 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                         await picker
                             .pickImage(source: ImageSource.gallery)
                             .then((value) {
-                              if(value!=null) {
-                                setState(() {
-                            pickedImage = value;
+                          if (value != null) {
+                            setState(() {
+                              pickedImage = value;
 
-                            print(pickedImage!.name);
-                          });
-                              }
+                              print(pickedImage!.name);
+                            });
+                          }
                         });
                       },
                       child: Container(
@@ -96,7 +115,6 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                                   )),
                       ),
                     ),
-
                     textFieldStyle(
                         context: context,
                         edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
@@ -140,9 +158,8 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                         textInputType: TextInputType.visiblePassword,
                         obscTxt: true,
                         textInputAction: TextInputAction.done),
-                    lightBlueBtn(
-                        'Sign Up', const EdgeInsets.only(bottom: 10, top: 10),
-                        () {
+                    lightBlueBtn('Add Doctor',
+                        const EdgeInsets.only(bottom: 10, top: 10), () {
                       continueSignUp();
 
                       //
@@ -231,40 +248,48 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
               password: passController.value.text);
 
       //save image in storage
-      var storageRef = FirebaseStorage.instance.ref().child("images");
+      var storageRef = FirebaseStorage.instance.ref().child("images").child(pickedImage!.path);
       storageRef.putFile(File(pickedImage!.path)).whenComplete(() async {
         var url = await storageRef.getDownloadURL();
         imageUrl = url.toString();
-      }).catchError((onError) {
-        print(onError);
-      });
-      // save data in database
 
-      DatabaseReference ref = FirebaseDatabase.instance
-          .reference()
-          .child(hospitals)
-          .child(widget.hospitalId)
-          .child(doctors);
-
-      ref
-          .child(userCredential.user!.uid)
-          .set(Doctors(
-                  image: imageUrl,id:userCredential.user!.uid ,
-                  hospitalId:widget.hospitalId ,
-                  email: emailController.value.text,
-                  name: nameController.value.text,hospitalName: widget.hospital.name,
-                  fees: feesController.value.text,
-                  specialist: majorController.value.text,
-                  phone: phoneController.value.text)
-              .toMap())
-          .then((value) {
-        moveToNewStack(context, dashBoardRoute);
+        DatabaseReference ref = FirebaseDatabase.instance
+            .ref()
+             .child(hospitals)
+             .child(Const.currentUserId)
+            .child(doctors);//.child(userCredential.user!.uid);
+        String? newkey = userCredential.user!.uid;
+        ref.child(newkey).set(Doctors(
+                    image: imageUrl,
+                    id:newkey,
+                    hospitalId:Const.currentUserId,
+                    email: emailController.value.text,
+                    name: nameController.value.text,
+                    hospitalName:hospitalName,
+                    fees: feesController.value.text,
+                    specialist: majorController.value.text,
+                    phone: phoneController.value.text)
+                .toMap())
+            .then((value) {
+          showSuccessMessage(context, 'Doctor Added Successfully');
+          moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
+            return const HospitalDashboard();
+          }));
+        }).catchError((onError) {
+          print(onError);
+        });
+        // save data in database
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        Navigator.pop(context);
+
+        showSuccessMessage(context, 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        Navigator.pop(context);
+
+        showSuccessMessage(
+            context, 'The account already exists for that email.');
       }
     } catch (e) {
       print(e);

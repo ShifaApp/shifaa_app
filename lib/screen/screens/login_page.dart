@@ -5,6 +5,7 @@ import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:shifa_app_flutter/models/user.dart';
 import 'package:shifa_app_flutter/screen/screens/dashboard_page.dart';
+import 'package:shifa_app_flutter/screen/screens/doctor/login_doctor.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
 
 import '../../const/route_constants.dart';
@@ -133,16 +134,19 @@ class _LogInPageState extends State<LogInPage> {
                                 fontWeight: FontWeight.w800)),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        moveToNewStack(context, registerHospitalRoute);
-                      },
-                      child: Text('Log in  as Doctor',
-                          style: TextStyle(
-                              color: CustomColors.lightBlueColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800)),
-                    ),
+                   //  GestureDetector(
+                   //    onTap: () {
+                   // //     moveToNewStack(context, doctorLoginRoute);
+                   //      Navigator.push(context,MaterialPageRoute(builder: (context) {
+                   //        return const LoginDoctor();
+                   //      }));
+                   //    },
+                   //    child: Text('Log in  as Doctor',
+                   //        style: TextStyle(
+                   //            color: CustomColors.lightBlueColor,
+                   //            fontSize: 20,
+                   //            fontWeight: FontWeight.w800)),
+                   //  ),
                   ],
                 ),
               ),
@@ -190,6 +194,7 @@ class _LogInPageState extends State<LogInPage> {
 
       DatabaseReference ref = FirebaseDatabase.instance.ref();
 
+      Const.currentUserId = userCredential.user!.uid;
       ref.child(users).child(userCredential.user!.uid).get().then((value) {
         if (value.exists) {
           print(value.value);
@@ -201,9 +206,9 @@ class _LogInPageState extends State<LogInPage> {
           ref.child(hospitals).child(userCredential.user!.uid);
           ref.get().then((value) {
             if (value.exists) {
-              print('Hospital + ${Hospitals.fromJson(value.value)}');
+
               moveToNewStackWithArgs(context,MaterialPageRoute(builder: (context) {
-                return HospitalDashboard(hospitals: Hospitals.fromJson(value.value));
+                return const HospitalDashboard();
               }));
             }
           });

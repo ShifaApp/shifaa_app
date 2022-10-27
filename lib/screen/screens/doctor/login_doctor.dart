@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
+import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
 import '../../../const/const.dart';
 import '../../../design/color.dart';
@@ -31,11 +32,12 @@ class _LoginDoctorState extends State<LoginDoctor> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.primaryWhiteColor,
+      appBar: basicAppBarWithBck('Login Doctor'),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+         //   mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -55,29 +57,28 @@ class _LoginDoctorState extends State<LoginDoctor> {
 
               ////////////////////////////
 
-              Column(
-                children: [
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Email',
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      controller: passController,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Password',
-                      textInputType: TextInputType.visiblePassword,
-                      obscTxt: true,
-                      textInputAction: TextInputAction.go),
-                  lightBlueBtn(
-                      'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
-                    continueLogin();
-                  }),
-                ],
+              const SizedBox(
+                height: 20,
               ),
+              textFieldStyle(
+                  context: context,
+                  edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                  lbTxt: 'Your Email',
+                  controller: emailController,
+                  textInputType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next),
+              textFieldStyle(
+                  context: context,
+                  controller: passController,
+                  edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                  lbTxt: 'Your Password',
+                  textInputType: TextInputType.visiblePassword,
+                  obscTxt: true,
+                  textInputAction: TextInputAction.go),
+              lightBlueBtn(
+                  'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
+                continueLogin();
+              }),
             ],
           ),
         ),
@@ -119,21 +120,11 @@ class _LoginDoctorState extends State<LoginDoctor> {
               email: emailController.value.text,
               password: passController.value.text);
 
-      DatabaseReference ref = FirebaseDatabase.instance.ref();
+      Const.doctorId = userCredential.user!.uid;
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return const DoctorDashboard();
+      }));
 
-      ref
-          .child(hospitals)
-          .equalTo(emailController.value.text)
-          .get()
-          .then((value) {
-        if (value.exists) {
-          print(value.value);
-
-          moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
-            return DoctorDashboard(doctors: Doctors.fromJson(value.value));
-          }));
-        }
-      });
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {

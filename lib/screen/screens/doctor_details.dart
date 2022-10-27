@@ -19,7 +19,8 @@ class DoctorDetails extends StatefulWidget {
   final Doctors doctor;
   final MyUser? myUser;
 
-  const DoctorDetails({Key? key, required this.doctor, this.myUser}) : super(key: key);
+  const DoctorDetails({Key? key, required this.doctor, this.myUser})
+      : super(key: key);
 
   @override
   State<DoctorDetails> createState() => _DoctorDetailsState();
@@ -29,31 +30,33 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
 
-  List <Appointments> appointmentsList=[];
+  List<Appointments> appointmentsList = [];
 
-  late Appointments indexAppointment ;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    DatabaseReference ref =
-    FirebaseDatabase.instance.reference().child(hospitals).child(widget.doctor.hospitalId!).child(widget.doctor.doctorId!);
+  late Appointments indexAppointment;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   DatabaseReference ref = FirebaseDatabase.instance
+  //       .reference()
+  //       .child(hospitals)
+  //       .child(widget.doctor.hospitalId!)
+  //       .child(widget.doctor.doctorId!);
+  //
+  //   ref.child(appointments).get().then((listAppointments) {
+  //     if (listAppointments.exists) {
+  //       print(listAppointments.value.toString());
+  //       //  appointmentsList = listAppointments.value;
+  //       setState(() {
+  //         appointmentsList = listAppointments.value;
+  //       });
+  //     }
+  //   });
+  // }
 
-    ref.child(appointments)
-        .get()
-        .then((listAppointments) {
-      if(listAppointments.exists){
-
-        print(listAppointments.value.toString());
-      //  appointmentsList = listAppointments.value;
-
-      }
-
-    });
-
-  }
   @override
   Widget build(BuildContext context) {
+    var value =
+        appointmentsList.isNotEmpty ? appointmentsList.first : Appointments();
     return Scaffold(
       appBar: basicAppBarWithBck(widget.doctor.name!),
       body: SafeArea(
@@ -165,58 +168,61 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
               // lightBlueBtn('Reserve an Appointment date', const EdgeInsets.all(20), () => _selectDate(context)),
 
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          color: CustomColors.lightBlueColor,
-                          size: 20,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Click to Reserve an Appointment date',
-                            maxLines: 2,
-                            style: TextStyle(fontSize: 16),
+              if (widget.doctor.appointments!.isNotEmpty)
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_today,
+                            color: CustomColors.lightBlueColor,
+                            size: 20,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButtonFormField<Appointments>(
-                        value: appointmentsList.first,
-                        decoration: const InputDecoration.collapsed(hintText: ''),
-                        // icon: const Icon(Icons.arrow_downward),
-                        elevation: 16,
-                        style: TextStyle(
-                            color: CustomColors.darkGrayColor,
-                        ),
-                        onChanged: (Appointments? newValue) {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-
-                            indexAppointment = newValue!;
-                          });
-
-                        },
-                        items: appointmentsList.map<DropdownMenuItem<Appointments>>((Appointments value) {
-                          return DropdownMenuItem<Appointments>(
-                            value: value,
-                            child: Text('${value.date!}, ${value.paymentType!}'),
-                          );
-                        }).toList(),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'Click to Reserve an Appointment date',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                ],
-              ),
+                    DropdownButtonHideUnderline(
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButtonFormField<Appointments>(
+                          value: value,
+                          decoration:
+                              const InputDecoration.collapsed(hintText: ''),
+                          // icon: const Icon(Icons.arrow_downward),
+                          elevation: 16,
+                          style: TextStyle(
+                            color: CustomColors.darkGrayColor,
+                          ),
+                          onChanged: (Appointments? newValue) {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              indexAppointment = newValue!;
+                            });
+                          },
+                          items: widget.doctor.appointments!
+                              .map<DropdownMenuItem<Appointments>>(
+                                  (Appointments value) {
+                            return DropdownMenuItem<Appointments>(
+                              value: value,
+                              child:
+                                  Text('${value.date!}, ${value.paymentType!}'),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               if (selectedDate != null && selectedTime != null)
                 Column(
                   children: [
@@ -245,8 +251,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         ],
                       ),
                     ),
-                    lightBlueBtn(
-                        'Continue Payment', const EdgeInsets.all(20), () {
+                    lightBlueBtn('Continue Payment', const EdgeInsets.all(20),
+                        () {
                       String date =
                           " ${selectedDate!.day} - ${selectedDate!.month} - ${selectedDate!.year}  ${selectedTime!.hour}: ${selectedTime!.minute}  ${selectedTime!.period.name}";
                       showModalBottomSheet<void>(
@@ -268,33 +274,5 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year),
-        lastDate: DateTime(DateTime.now().year + 4));
-    if (picked != null && picked != selectedDate) {
-      _selectTime(context, picked);
-      // setState(() {
-      //   selectedDate = picked;
-      // });
-    }
-  }
 
-  Future<Null> _selectTime(BuildContext context, pickedDate) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: const TimeOfDay(hour: 00, minute: 00),
-    );
-    if (picked != null) {
-      setState(() {
-        selectedTime = picked;
-        selectedDate = pickedDate;
-        // _timeController.text = formatDate(
-        //     DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        //     [hh, ':', nn, " ", am]).toString();
-      });
-    }
-  }
 }

@@ -10,6 +10,7 @@ class Appointments {
       String? doctorName,
       String? paymentType,
       String? hospitalName,
+      String? hospitalId,
       String? patientName,
       String? patientId,
       String? doctorId,
@@ -18,6 +19,7 @@ class Appointments {
     _date = date;
     _patientName = patientName;
     _doctorName = doctorName;
+    _hospitalId = hospitalId;
     _hospitalName = hospitalName;
     _paymentType = paymentType;
     _patientId = patientId;
@@ -25,17 +27,29 @@ class Appointments {
     _type = appointmentType;
   }
 
-  Appointments.fromJson(dynamic json) {
-    _completed = json['completed'];
-    _date = json['date'];
-    _doctorName = json['doctor_name'];
-    _hospitalName = json['hospital_name'];
-    _paymentType = json['payment_type'];
-    _patientName = json['patient_name'];
-    _patientId = json['patient_id'];
-    _doctorId = json['doctor_id'];
+ factory Appointments.fromJson(dynamic json) {
+    return Appointments( completed:  json["completed"]  ,
+      date : json['date'],
+      doctorName : json['doctor_name'],
+      hospitalName : json['hospital_name'],
+      paymentType : json['payment_type'],
+      patientName : json['patient_name'],
+      patientId : json['patient_id'],
+      doctorId : json['doctor_id'],
+      hospitalId : json['hospital_id'],
 
-    _type = json['appointment_type'];
+      appointmentType : json['appointment_type'],);
+    // _completed = json['completed'];
+    // _date = json['date'];
+    // _doctorName = json['doctor_name'];
+    // _hospitalName = json['hospital_name'];
+    // _paymentType = json['payment_type'];
+    // _patientName = json['patient_name'];
+    // _patientId = json['patient_id'];
+    // _doctorId = json['doctor_id'];
+    // _hospitalId = json['hospital_id'];
+    //
+    // _type = json['appointment_type'];
   }
   bool? _completed;
   String? _date;
@@ -47,6 +61,7 @@ class Appointments {
   String? _patientName;
   String? _type;
   String? _patientId;
+  String? _hospitalId;
 
   bool? get reserved => _completed;
   String? get date => _date;
@@ -57,13 +72,16 @@ class Appointments {
   String? get appointmentType => _type;
   String? get patientId => _patientId;
   String? get doctorId => _doctorId;
+  String? get hospitalId => _hospitalId;
 
-  setPatientName(String patientName){
+  setPatientName(String patientName) {
     _patientName = patientName;
   }
-  setPatientId(String patientId){
+
+  setPatientId(String patientId) {
     _patientId = patientId;
   }
+
   Map<String, dynamic> toMap() {
     return {
       "completed": _completed,
@@ -75,6 +93,7 @@ class Appointments {
       'patientName': _patientName,
       'patientId': _patientId,
       'doctor_id': _doctorId,
+      'hospital_id': _hospitalId,
     };
   }
 }

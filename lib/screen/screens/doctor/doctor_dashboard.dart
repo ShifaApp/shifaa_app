@@ -15,14 +15,31 @@ import '../../widget/app_bar_design.dart';
 import 'add_appointement.dart';
 
 class DoctorDashboard extends StatefulWidget {
-  final Doctors doctors;
-  const DoctorDashboard({Key? key,required this.doctors}) : super(key: key);
+  const DoctorDashboard({Key? key}) : super(key: key);
 
   @override
   State<DoctorDashboard> createState() => _DoctorDashboardState();
 }
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
+  // late Doctors doctor;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   DatabaseReference ref =
+  //   FirebaseDatabase.instance.reference().child(hospitals).child(Const.currentUserId).child(doctors);
+  //
+  //   ref.child(Const.doctorId).get().then((h) {
+  //     if (h.exists) {
+  //
+  //       doctor = Doctors.fromJson(h.value);
+  //       setState(() {
+  //      //   hospitalId = hospital!.hospitalId!;
+  //       });
+  //     }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +67,11 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               context,
               MaterialPageRoute(
                   builder: (context) =>  AddAppointment(
-                       doctors: widget.doctors,
+                      // doctors:doctor,
                       )));
         } else if (value == 2) {
           FirebaseAuth.instance.signOut().then((value) {
-            moveToNewStack(context, loginRoute);
+            moveToNewStack(context, hospitalDashBoardRoute);
           });
         }
       }),
@@ -62,9 +79,9 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
         query: FirebaseDatabase.instance
             .reference()
             .child(hospitals)
-            .child(FirebaseAuth.instance.currentUser!.uid)
+            .child(Const.currentUserId)
             .child(doctors)
-            .child(FirebaseAuth.instance.currentUser!.uid)
+            .child(Const.doctorId)
             .child(appointments),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
@@ -76,7 +93,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return AppointmentDetails(
-                    appointments: appointments,doctors: widget.doctors,
+                    appointments: appointments
                   );
                 }));
               },

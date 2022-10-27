@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
           if (snapshot.exists && snapshot.value != null) {
+            print(snapshot.value);
             Hospitals hospital = Hospitals.fromJson(snapshot.value);
 
             //list item design
@@ -51,13 +52,13 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Column(
                   children: [
-                    Container(
+                    Container(height: MediaQuery.of(context).size.height/5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Image.network(
+                        child: Image.network(width:  MediaQuery.of(context).size.width,
                           hospital.image!,
                         ),
                       ),
