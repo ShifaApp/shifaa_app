@@ -32,24 +32,6 @@ class Doctors {
   }
 
   factory Doctors.fromJson(dynamic json) {
-    // List<Appointments> appointments = [];
-    // if (json['appointments'] != null) {
-    //
-    //   json['appointments'].forEach((v) {
-    //     appointments.add(Appointments( completed:  json["completed"]  ,
-    //       date : json['date'],
-    //       doctorName : json['doctor_name'],
-    //       hospitalName : json['hospital_name'],
-    //       paymentType : json['payment_type'],
-    //       patientName : json['patient_name'],
-    //       patientId : json['patient_id'],
-    //       doctorId : json['doctor_id'],
-    //       hospitalId : json['hospital_id'],
-    //
-    //       appointmentType : json['appointment_type'],));
-    //   });
-    // }
-  //  Map<String, dynamic> data =  Map<String, dynamic>.from(json['appointments']);
 
    // print(json['appointments'] .cast<String,dynamic>());
   //  Iterable l = json['appointments'] .cast<String,dynamic>();//json.decode(json['appointments']);
