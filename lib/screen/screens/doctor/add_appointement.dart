@@ -126,7 +126,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                               .update(Appointments(
                                       date:
                                           "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year} ${selectedTime!.hour}:${selectedTime!.minute} ${selectedTime!.period.name}",
-                                      doctorId: Const.doctorId,
+                                      doctorId: Const.currentUserId,
                                       hospitalId: doctor.hospitalId,
                                       hospitalName: doctor.hospitalName,
                                       doctorName: doctor.name,

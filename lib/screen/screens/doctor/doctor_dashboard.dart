@@ -78,10 +78,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
       body: FirebaseAnimatedList(
         query: FirebaseDatabase.instance
             .reference()
-            .child(hospitals)
-            .child(Const.currentUserId)
+          //  .child(hospitals)
+
             .child(doctors)
-            .child(Const.doctorId)
+            .child(Const.currentUserId)
             .child(appointments),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
