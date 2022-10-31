@@ -77,8 +77,7 @@ class _LogInPageState extends State<LogInPage> {
 
                       moveToNewStackWithArgs(context,
                           MaterialPageRoute(builder: (context) {
-                        return DashboardPage(
-                            myUser: MyUser.fromJson(value.value));
+                        return const DashboardPage();
                       }));
                     }
                   });

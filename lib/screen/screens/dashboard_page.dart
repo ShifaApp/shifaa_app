@@ -5,8 +5,8 @@ import 'package:shifa_app_flutter/screen/screens/appointements_page.dart';
 import 'package:shifa_app_flutter/screen/screens/home_page.dart';
 import 'package:shifa_app_flutter/screen/screens/setting_page.dart';
 class DashboardPage extends StatefulWidget {
-  final MyUser myUser;
-  const DashboardPage({Key? key,required this.myUser}) : super(key: key);
+
+  const DashboardPage({Key? key}) : super(key: key);
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -70,7 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onPressed: () {
                   setState(() {
                     //ishasbranch could be set to false later
-                    currentScreen =  HomePage(myUser:widget.myUser);
+                    currentScreen =  HomePage();
                     currentTab = 0;
                   });
                 },

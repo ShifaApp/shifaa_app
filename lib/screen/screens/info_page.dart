@@ -30,7 +30,7 @@ class _MyInfoState extends State<MyInfo> {
   final TextEditingController dateController = TextEditingController();
 
   bool isBtnEnabled = true;
-  List<String> sexList = ['Select Your Sex ', 'Male', 'Female'];
+  List<String> sexList = ['Select Your Gender ', 'Male', 'Female'];
   String? selectedSex;
   @override
   void initState() {

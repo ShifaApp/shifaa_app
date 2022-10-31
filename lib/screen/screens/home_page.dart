@@ -11,9 +11,9 @@ import '../../models/user.dart';
 import '../widget/app_bar_design.dart';
 
 class HomePage extends StatefulWidget {
-  final MyUser? myUser;
 
-  const HomePage({Key? key, this.myUser}) : super(key: key);
+
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
