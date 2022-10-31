@@ -76,7 +76,7 @@ class _MyInfoState extends State<MyInfo> {
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                   lbTxt: 'Your Email',
                   controller: emailController,
-                  enabled: false,
+
                   textInputType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next),
               textFieldStyle(
@@ -84,7 +84,7 @@ class _MyInfoState extends State<MyInfo> {
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                   lbTxt: 'Your Phone',
                   controller: phoneController,
-                  enabled: false,
+
                   textInputType: TextInputType.phone,
                   textInputAction: TextInputAction.next),
               textFieldStyle(
@@ -92,7 +92,6 @@ class _MyInfoState extends State<MyInfo> {
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                   lbTxt: 'Your Insurance Id ',
                   controller: insuranceController,
-                  enabled: false,
                   textInputType: TextInputType.number,
                   textInputAction: TextInputAction.next),
               textFieldStyle(
@@ -100,7 +99,7 @@ class _MyInfoState extends State<MyInfo> {
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                   lbTxt: 'Your Address',
                   controller: addressController,
-                  enabled: false,
+
                   textInputType: TextInputType.text,
                   textInputAction: TextInputAction.next),
               // sex , birth date
