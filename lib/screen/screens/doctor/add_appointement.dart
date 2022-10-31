@@ -106,20 +106,20 @@ class _AddAppointmentState extends State<AddAppointment> {
                       DatabaseReference ref =
                           FirebaseDatabase.instance.reference();
                       final query = ref
-                          .child(hospitals)
-                          .child(Const.currentUserId)
-                          .child(doctors);
+                         // .child(hospitals)
 
-                      query.child(Const.doctorId).get().then((h) {
+                          .child(doctors)  .child(Const.currentUserId);
+
+                      query.get().then((h) {
                         if (h.exists) {
                           print(h.value);
                           final Doctors doctor = Doctors.fromJson(h.value );
 
                           final addQuery = ref
-                              .child(hospitals)
-                              .child(Const.currentUserId)
+                              //.child(hospitals)
+                              //.child(Const.currentUserId)
                               .child(doctors)
-                              .child(Const.doctorId)
+                              .child(Const.currentUserId)
                               .child(appointments);
                           addQuery
                               .push()
