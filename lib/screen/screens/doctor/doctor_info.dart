@@ -39,10 +39,10 @@ class _DoctorInfoState extends State<DoctorInfo> {
 
     DatabaseReference ref = FirebaseDatabase.instance
         .reference()
-        .child(hospitals)
-        .child(Const.currentUserId)
+        //.child(hospitals)
+
         .child(doctors)
-        .child(Const.doctorId);
+        .child(Const.currentUserId);
 
     ref.get().then((h) {
       if (h.exists) {
