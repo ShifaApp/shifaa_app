@@ -19,7 +19,7 @@ class _MyRecipesState extends State<MyRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: basicAppBarWithBck('My Recipes'),
+      appBar: basicAppBarWithBck('My Prescriptions'),
       body: FirebaseAnimatedList(
         query: FirebaseDatabase.instance.reference().child(users)
           .child(Const.currentUserId)
@@ -30,112 +30,122 @@ class _MyRecipesState extends State<MyRecipes> {
             Recipe recipe = Recipe.fromJson(snapshot.value);
 
             //list item design
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Appointment date',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.primaryBlackColor),
+            return Container(
+              margin: const EdgeInsets.all(10),
+              //    height: MediaQuery.of(context).size.height/7,
+              decoration: BoxDecoration(
+                color: CustomColors.primaryWhiteColor,
+                borderRadius: BorderRadius.circular(10),
+                border:
+                Border.all(color: CustomColors.lightBlueColor, width: 3),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Appointment date',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.primaryBlackColor),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        recipe.appointmentDate ?? '',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.lightBlueColor),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          recipe.appointmentDate ?? '',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.lightBlueColor),
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Appointment Type',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.primaryBlackColor),
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Appointment Type',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.primaryBlackColor),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          recipe.appointmentType ?? '',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.lightBlueColor),
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Doctor Name',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.primaryBlackColor),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        recipe.appointmentType ?? '',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.lightBlueColor),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          recipe.doctorName ?? '',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.lightBlueColor),
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Doctor Name',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.primaryBlackColor),
+                    ],
+                  ),
+                  const Divider(),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Diagnosis',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.primaryBlackColor),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        recipe.doctorName ?? '',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.lightBlueColor),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          recipe.diagnosis ?? '',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.lightBlueColor),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Diagnosis',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.primaryBlackColor),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        recipe.diagnosis ?? '',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.lightBlueColor),
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Recipe',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.primaryBlackColor),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Prescription: ',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.primaryBlackColor),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        recipe.recipe ?? '',
-                        style: TextStyle(
-                            fontSize: 18, color: CustomColors.lightBlueColor),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          recipe.recipe ?? '',
+                          style: TextStyle(
+                              fontSize: 18, color: CustomColors.lightBlueColor),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-              ],
+                ],
+              ),
             );
           } else {
             return const Text('no data ');

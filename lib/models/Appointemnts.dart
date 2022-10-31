@@ -34,9 +34,9 @@ class Appointments {
     _date = json['date'];
     _doctorName = json['doctor_name'];
     _hospitalName = json['hospital_name'];
-    _paymentType = json['payment_type'];
-    _patientName = json['patient_name'];
-    _patientId = json['patient_id'];
+    _paymentType = json['paymentType'];
+    _patientName = json['patientName'];
+    _patientId = json['patientId'];
     _doctorId = json['doctor_id'];
     _hospitalId = json['hospital_id'];
     _type = json['appointment_type'];

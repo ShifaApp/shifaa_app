@@ -32,7 +32,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Appointment date',
+                      'Appointment date:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -42,7 +42,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     child: Text(
                       widget.appointments.date ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   )
                 ],
@@ -52,7 +52,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Appointment Type',
+                      'Appointment Type:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -62,7 +62,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     child: Text(
                       widget.appointments.appointmentType ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   )
                 ],
@@ -72,7 +72,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Patient Name',
+                      'Patient Name:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -82,7 +82,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     child: Text(
                       widget.appointments.patientName ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   ),
                 ],
@@ -92,7 +92,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Payment Type',
+                      'Payment Type :',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -102,19 +102,19 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                     child: Text(
                       widget.appointments.paymentType ?? '',
                       style: TextStyle(
-                          fontSize: 18, color: CustomColors.primaryBlackColor),
+                          fontSize: 18, color: CustomColors.lightBlueColor),
                     ),
                   ),
                 ],
               ),
-              if (!closeAppointment)
-                lightBlueBtn('Close appointment ', const EdgeInsets.all(20),
-                    () {
-                  setState(() {
-                    closeAppointment = true;
-                  });
-                }),
-              if (closeAppointment)
+              // if (!closeAppointment)
+              //   lightBlueBtn('Close appointment ', const EdgeInsets.all(20),
+              //       () {
+              //     setState(() {
+              //       closeAppointment = true;
+              //     });
+              //   }),
+              // if (closeAppointment)
                 lightBlueBtn('Add Recipe ', const EdgeInsets.all(20), () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return  AddRecipe(appointments: widget.appointments);

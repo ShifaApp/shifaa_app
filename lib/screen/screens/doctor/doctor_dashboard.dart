@@ -91,11 +91,13 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
             //list item design
             return InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                if(appointments.reserved == true) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return AppointmentDetails(
                     appointments: appointments
                   );
                 }));
+                }
               },
               child: Container(
                 //    height: MediaQuery.of(context).size.height/3,
@@ -120,7 +122,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        appointments.patientName ?? "No Patient yet",
+                       appointments.reserved?? false ? appointments.patientName ?? '':"No Patient yet",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),

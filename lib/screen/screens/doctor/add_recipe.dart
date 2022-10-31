@@ -30,7 +30,7 @@ class _AddRecipeState extends State<AddRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: basicAppBarWithBck('Add Recipe'),
+      appBar: basicAppBarWithBck('Add Prescription'),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -40,7 +40,7 @@ class _AddRecipeState extends State<AddRecipe> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Appointment date',
+                      'Appointment date:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -60,7 +60,7 @@ class _AddRecipeState extends State<AddRecipe> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Appointment Type',
+                      'Appointment Type:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -80,7 +80,7 @@ class _AddRecipeState extends State<AddRecipe> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Patient Name',
+                      'Patient Name:',
                       style: TextStyle(
                           fontSize: 18, color: CustomColors.primaryBlackColor),
                     ),
@@ -106,7 +106,7 @@ class _AddRecipeState extends State<AddRecipe> {
               largeTextFieldStyle(
                   context: context,
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                  lbTxt: 'Recipe',
+                  lbTxt: 'Prescriptions',
                   controller: recipeController,
                   textInputType: TextInputType.multiline,
                   textInputAction: TextInputAction.go),
@@ -118,6 +118,13 @@ class _AddRecipeState extends State<AddRecipe> {
                       .child(users)
                       .child(widget.appointments.patientId!)
                       .child(recipes);
+
+              //     widget.appointments.setCompleted(true);
+              // FirebaseDatabase.instance
+              //         .reference()
+              //     .child(doctors)
+              //         .child(Const.currentUserId)
+              //         .child(appointments).push().update(widget.appointments.toMap());
                   ref
                       .push()
                       .update(Recipe(
