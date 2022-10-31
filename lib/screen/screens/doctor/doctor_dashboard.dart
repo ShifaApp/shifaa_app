@@ -71,7 +71,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                       )));
         } else if (value == 2) {
           FirebaseAuth.instance.signOut().then((value) {
-            moveToNewStack(context, hospitalDashBoardRoute);
+            moveToNewStack(context, loginRoute);
           });
         }
       }),

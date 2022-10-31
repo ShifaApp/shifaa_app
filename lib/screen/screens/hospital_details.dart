@@ -35,7 +35,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
 
     ref.get().then((h) {
       if (h.exists) {
-        for
+       // for
         print(h.value);
         doctor.add(Doctors.fromJson(h.value));
         setState(() {});

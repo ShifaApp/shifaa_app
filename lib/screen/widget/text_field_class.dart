@@ -10,7 +10,7 @@ textFieldStyle(
     TextInputType? textInputType,
     String? lbTxt,
     obscTxt = false,
-      bool enabled = true,
+      bool enabled = true,readOnly = false,onTap,
     textInputAction}) {
   return Container(
     alignment: Alignment.center,
@@ -26,7 +26,8 @@ textFieldStyle(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: TextFormField(
+          child: TextFormField(onTap: onTap,
+            readOnly: readOnly,
             enabled:enabled ,
             textInputAction: textInputAction,
             obscureText: obscTxt,

@@ -56,12 +56,12 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
             value: 1,
             child: Text("Add Doctor"),
           ),
+          // const PopupMenuItem<int>(
+          //   value: 2,
+          //   child: Text("Login Doctor"),
+          // ),
           const PopupMenuItem<int>(
             value: 2,
-            child: Text("Login Doctor"),
-          ),
-          const PopupMenuItem<int>(
-            value: 3,
             child: Text("Logout"),
           ),
         ];
@@ -72,25 +72,26 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
         } else if (value == 1) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const RegisterDoctor()));
-        } else if (value == 2) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginDoctor()));
-        } else if (value == 3) {
+        }
+        // else if (value == 2) {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => const LoginDoctor()));
+        // }
+        else if (value == 2) {
           FirebaseAuth.instance.signOut().then((value) {
             moveToNewStack(context, loginRoute);
           });
         }
       }),
       body: FirebaseAnimatedList(
-        query: FirebaseDatabase.instance
-            .reference()
-            .child(hospitals)
-            .child(Const.currentUserId)
-            .child(doctors),
+        query:
+            FirebaseDatabase.instance.reference().child(doctors).orderByValue(),
+        // .child(Const.currentUserId)
+        // .child(doctors),
         itemBuilder: (BuildContext context, DataSnapshot snapshot,
             Animation<double> animation, int index) {
           if (snapshot.exists && snapshot.value != null) {
-            Map<dynamic, dynamic> map = snapshot.value as Map<dynamic, dynamic>  ;
+            Map<dynamic, dynamic> map = snapshot.value as Map<dynamic, dynamic>;
             Doctors doctor = Doctors.fromJson(map);
 
             //list item design

@@ -142,34 +142,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
                 )
                 //////////////////////////////////////////
                 ,
-                GestureDetector(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already Have an Account ?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: CustomColors.lightBlueColor,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        'Log In',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: CustomColors.lightBlueColor,
-                          fontSize: 14,
-                        ),
-                      )
-                      ///////////////
-                      ,
-                    ],
-                  ),
-                  onTap: () {
-                    moveToNewStack(context, loginRoute);
-                  },
-                ),
+
               ],
             ),
           ),

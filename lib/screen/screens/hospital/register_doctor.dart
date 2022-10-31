@@ -255,9 +255,9 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
 
         DatabaseReference ref = FirebaseDatabase.instance
             .ref()
-             .child(hospitals)
-             .child(Const.currentUserId)
-            .child(doctors);//.child(userCredential.user!.uid);
+             .child(doctors);
+            //  .child(Const.currentUserId)
+            // .child(doctors);//.child(userCredential.user!.uid);
         String? newkey = userCredential.user!.uid;
         ref.child(newkey).set(Doctors(
                     image: imageUrl,

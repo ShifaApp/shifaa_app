@@ -7,6 +7,8 @@ import 'package:shifa_app_flutter/models/user.dart';
 import 'package:shifa_app_flutter/screen/screens/dashboard_page.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor/login_doctor.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
+import 'package:shifa_app_flutter/screen/screens/hospital/register_hospital.dart';
+import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
 
 import '../../const/route_constants.dart';
 import '../../dialogs/message_dialog.dart';
@@ -18,6 +20,7 @@ import '../../models/Doctors.dart';
 import '../../models/Hospitals.dart';
 import '../widget/buttons_class.dart';
 import '../widget/text_field_class.dart';
+import 'doctor/doctor_dashboard.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({Key? key}) : super(key: key);
@@ -30,135 +33,184 @@ class _LogInPageState extends State<LogInPage> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   bool isBtnEnabled = true;
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+  String? userId;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: CustomColors.primaryWhiteColor,
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  'assests/shifa.png',
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
-              ),
-              // Text(
-              //   'Log In'.toUpperCase(),
-              //   textAlign: TextAlign.center,
-              //   style:  TextStyle(
-              //       color: CustomColors.lightBlueColor,
-              //       fontSize: 28,
-              //       fontWeight: FontWeight.w800),
-              // ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: CustomColors.primaryWhiteColor,
+          body: SafeArea(
+              child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                 SliverAppBar(
+                   backgroundColor: CustomColors.lightBlueColor,
+                  // centerTitle: true,
+                // title: Text('Log IN',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20)),
+                  pinned: true,
+                  floating: true,
 
-              ////////////////////////////
-
-              Column(
-                children: [
-                  textFieldStyle(
-                      context: context,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Email',
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next),
-                  textFieldStyle(
-                      context: context,
-                      controller: passController,
-                      edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
-                      lbTxt: 'Your Password',
-                      textInputType: TextInputType.visiblePassword,
-                      obscTxt: true,
-                      textInputAction: TextInputAction.go),
-                  lightBlueBtn(
-                      'Log In', const EdgeInsets.only(bottom: 10, top: 10), () {
-                    continueLogin();
-                  }),
-                  GestureDetector(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account ? ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: CustomColors.lightBlueColor,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(
-                          'Sign Up',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: CustomColors.lightBlueColor,
-                            fontSize: 14,
-                          ),
-                        )
-                        ///////////////
-                        ,
-                      ],
-                    ),
-                    onTap: () {
-                      moveToNewStack(context, signupRoute);
-                    },
+                  bottom: TabBar(
+                    indicatorColor: CustomColors.primaryWhiteColor,
+                   indicatorWeight: 2,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(child: Text('Patient',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20),)),
+                      Tab(child: Text('Hospital',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20))),
+                      Tab(child: Text('Doctor',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20))),
+                    ],
                   ),
-                ],
-              )
-         ,
+                ),
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                pageDesign((userId) {
+                  ref.child(users).child(userId!).get().then((value) {
+                    if (value.exists) {
+                      print(value.value);
 
-              const SizedBox(
-                height: 70,
-              )
-              //////////////////////////////////////////
-              ,
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
+                      moveToNewStackWithArgs(context,
+                          MaterialPageRoute(builder: (context) {
+                        return DashboardPage(
+                            myUser: MyUser.fromJson(value.value));
+                      }));
+                    }
+                  });
+                },userType: users),
+                pageDesign((userId) {
+                  ref.child(hospitals).child(userId!).get().then((value) {
+                    if (value.exists) {
+                      print(value.value);
+
+                      moveToNewStackWithArgs(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const HospitalDashboard();
+                      }));
+                    }
+                  });
+                },userType:  hospitals),
+                pageDesign((userId) {
+                  ref.child(doctors).child(userId!).get().then((value) {
+                    if (value.exists) {
+                      print(value.value);
+
+                      moveToNewStackWithArgs(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const DoctorDashboard();
+                      }));
+                    }
+                  });
+                },userType: doctors),
+              ],
+            ),
+          ))),
+    );
+  }
+
+  pageDesign(action,{userType = hospitals}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Column(
+       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assests/shifa.png',
+              height: MediaQuery.of(context).size.height / 4,
+            ),
+          ),
+          // Text(
+          //   'Log In'.toUpperCase(),
+          //   textAlign: TextAlign.center,
+          //   style:  TextStyle(
+          //       color: CustomColors.lightBlueColor,
+          //       fontSize: 28,
+          //       fontWeight: FontWeight.w800),
+          // ),
+
+          ////////////////////////////
+
+
+          Column(
+            children: [
+              const SizedBox(height: 20,),
+              textFieldStyle(
+                  context: context,
+                  edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                  lbTxt: 'Your Email',
+                  controller: emailController,
+                  textInputType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next),
+              textFieldStyle(
+                  context: context,
+                  controller: passController,
+                  edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
+                  lbTxt: 'Your Password',
+                  textInputType: TextInputType.visiblePassword,
+                  obscTxt: true,
+                  textInputAction: TextInputAction.done),
+              lightBlueBtn('Log In', const EdgeInsets.only(bottom: 10, top: 10),
+                  () {
+                continueLogin(action);
+              }),
+              if(userType == hospitals || userType == users )
+              GestureDetector(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        moveToNewStack(context, registerHospitalRoute);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Register as Hospital',
-                            style: TextStyle(
-                                color: CustomColors.lightBlueColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800)),
+                    Text(
+                      "Don't have an account ? ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: CustomColors.lightBlueColor,
+                        fontSize: 14,
                       ),
                     ),
-                   //  GestureDetector(
-                   //    onTap: () {
-                   // //     moveToNewStack(context, doctorLoginRoute);
-                   //      Navigator.push(context,MaterialPageRoute(builder: (context) {
-                   //        return const LoginDoctor();
-                   //      }));
-                   //    },
-                   //    child: Text('Log in  as Doctor',
-                   //        style: TextStyle(
-                   //            color: CustomColors.lightBlueColor,
-                   //            fontSize: 20,
-                   //            fontWeight: FontWeight.w800)),
-                   //  ),
+                    Text(
+                      'Sign Up',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: CustomColors.lightBlueColor,
+                        fontSize: 14,
+                      ),
+                    )
+                    ///////////////
+                    ,
                   ],
                 ),
-              ),
+                onTap: () {
+                  if(userType == users) {
+                  //  moveToNewStack(context, signupRoute);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return const SignUpPage(
 
+                      );
+                    }));
+                  } else {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return const RegisterHospital(
+
+                      );
+                    }));
+                  }
+                },
+              ),
             ],
           ),
-        ),
+
+        ],
       ),
     );
   }
 
-  void continueLogin() async {
+  void continueLogin(Function(String value) action) async {
     if (emailController.value.text == '') {
       showErrorMessageDialog(context, 'Please Enter your Email');
 
@@ -187,33 +239,11 @@ class _LogInPageState extends State<LogInPage> {
     showLoaderDialog(context);
     FocusScope.of(context).unfocus();
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: emailController.value.text,
-              password: passController.value.text);
-
-      DatabaseReference ref = FirebaseDatabase.instance.ref();
-
-      Const.currentUserId = userCredential.user!.uid;
-      ref.child(users).child(userCredential.user!.uid).get().then((value) {
-        if (value.exists) {
-          print(value.value);
-
-          moveToNewStackWithArgs(context,MaterialPageRoute(builder: (context) {
-            return DashboardPage(myUser:  MyUser.fromJson(value.value));
-          }));
-        } else {
-          ref.child(hospitals).child(userCredential.user!.uid);
-          ref.get().then((value) {
-            if (value.exists) {
-
-              moveToNewStackWithArgs(context,MaterialPageRoute(builder: (context) {
-                return const HospitalDashboard();
-              }));
-            }
-          });
-        }
+      registerInAuth().then((value) {
+        action(value);
       });
+
+
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {
@@ -222,5 +252,19 @@ class _LogInPageState extends State<LogInPage> {
         showSuccessMessage(context, 'Wrong password provided for that user.');
       }
     }
+  }
+
+ Future<String> registerInAuth() async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: emailController.value.text,
+            password: passController.value.text);
+
+    Const.currentUserId = userCredential.user!.uid;
+
+    return userCredential.user!.uid;
+    // setState(() {
+    //   userId = userCredential.user!.uid;
+    // });
   }
 }
