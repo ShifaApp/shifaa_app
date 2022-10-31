@@ -31,52 +31,70 @@ class Doctors {
     _specialist = specialist;
   }
 
-  factory Doctors.fromJson(dynamic json) {
+   Doctors.fromJson(dynamic json) {
+    if(json != null){
+      // if (json['appointments'] != null) {
+      //   _appointments = [];
+      //   json['appointments'].forEach((v) {
+      //     _appointments?.add(Appointments.fromJson(v));
+      //   });
+      // }
+
+      _image =json['image'];
+      _name = json['name'];
+      _phone = json['phone'];
+      _email = json['email'];
+      _hospitalName = json['hospitalName'];
+      _hospitalId = json['hospitalId'];
+      _specialist = json['specialist'];
+      _id = json['doctorId'];
+      _fees = json['fees'];
+    }
 
    // print(json['appointments'] .cast<String,dynamic>());
   //  Iterable l = json['appointments'] .cast<String,dynamic>();//json.decode(json['appointments']);
-    List<Appointments> posts = List<Appointments>.from(json['appointments'] .map((model)=> Appointments.fromJson(model)));
-   return Doctors( fees : json['fees'],
-       image :json['image'],
-       name : json['name'],
-       phone : json['phone'],
-       email : json['email'],
-       hospitalName : json['hospitalName'],
-       hospitalId : json['hospitalId'],
-       specialist : json['specialist'],
-       id : json['doctorId'],appointments: posts
-
-
-  // if (json != null) {
-  //    _fees = json['fees'];
-  //    _image = json['image'];
-  //    _name = json['name'];
-  //    _phone = json['phone'];
-  //    _email = json['email'];
-  //    _hospitalName = json['hospitalName'];
-  //    _hospitalId = json['hospitalId'];
-  //    _specialist = json['specialist'];
-  //    _id = json['doctorId'];
-  //    //List<Appointments>.from(json["appointments"].map((x) => x));
-  //    if (json['appointments'] != null) {
-  //      _appointments = [];
-  //      json['appointments'].forEach((v) {
-  //        _appointments?.add(Appointments(
-  //          completed: json["completed"],
-  //          date: json['date'],
-  //          doctorName: json['doctor_name'],
-  //          hospitalName: json['hospital_name'],
-  //          paymentType: json['payment_type'],
-  //          patientName: json['patient_name'],
-  //          patientId: json['patient_id'],
-  //          doctorId: json['doctor_id'],
-  //          hospitalId: json['hospital_id'],
-  //          appointmentType: json['appointment_type'],
-  //        ));
-  //      });
-  //    }
-  //  }
-   );
+  //   List<Appointments> posts = List<Appointments>.from(json['appointments'] .map((model)=> Appointments.fromJson(model)));
+  //  return Doctors( fees : json['fees'],
+  //      image :json['image'],
+  //      name : json['name'],
+  //      phone : json['phone'],
+  //      email : json['email'],
+  //      hospitalName : json['hospitalName'],
+  //      hospitalId : json['hospitalId'],
+  //      specialist : json['specialist'],
+  //      id : json['doctorId'],appointments: posts
+  //
+  //
+  // // if (json != null) {
+  // //    _fees = json['fees'];
+  // //    _image = json['image'];
+  // //    _name = json['name'];
+  // //    _phone = json['phone'];
+  // //    _email = json['email'];
+  // //    _hospitalName = json['hospitalName'];
+  // //    _hospitalId = json['hospitalId'];
+  // //    _specialist = json['specialist'];
+  // //    _id = json['doctorId'];
+  // //    //List<Appointments>.from(json["appointments"].map((x) => x));
+  // //    if (json['appointments'] != null) {
+  // //      _appointments = [];
+  // //      json['appointments'].forEach((v) {
+  // //        _appointments?.add(Appointments(
+  // //          completed: json["completed"],
+  // //          date: json['date'],
+  // //          doctorName: json['doctor_name'],
+  // //          hospitalName: json['hospital_name'],
+  // //          paymentType: json['payment_type'],
+  // //          patientName: json['patient_name'],
+  // //          patientId: json['patient_id'],
+  // //          doctorId: json['doctor_id'],
+  // //          hospitalId: json['hospital_id'],
+  // //          appointmentType: json['appointment_type'],
+  // //        ));
+  // //      });
+  // //    }
+  // //  }
+  //  );
   }
   String? _fees;
   String? _image;

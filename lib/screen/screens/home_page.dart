@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return HospitalDetails(
-                    hospital: hospital,myUser: widget.myUser!,
+                    hospital: hospital
                   );
                 }));
               },
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Image.network(width:  MediaQuery.of(context).size.width,
-                          hospital.image!,
+                          hospital.image!,        fit: BoxFit.fill,
                         ),
                       ),
                     ),

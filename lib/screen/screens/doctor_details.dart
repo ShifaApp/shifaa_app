@@ -14,12 +14,13 @@ import '../../helpers/contact_helper.dart';
 import '../../models/Doctors.dart';
 import '../../models/Appointemnts.dart';
 import '../widget/app_bar_design.dart';
+import 'doctor/appointments_list.dart';
 
 class DoctorDetails extends StatefulWidget {
   final Doctors doctor;
-  final MyUser? myUser;
+  //final MyUser? myUser;
 
-  const DoctorDetails({Key? key, required this.doctor, this.myUser})
+  const DoctorDetails({Key? key, required this.doctor,})
       : super(key: key);
 
   @override
@@ -32,6 +33,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 
   List<Appointments> appointmentsList = [];
 
+  bool selectedAppointments = false;
   late Appointments indexAppointment;
   // @override
   // void initState() {
@@ -77,6 +79,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     ? Image.network(
                         widget.doctor.image!,
                         fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width,
                       )
                     : Image.asset('assests/shifa.png'),
               ),
@@ -166,10 +169,24 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 color: CustomColors.lightGrayColor,
               ),
 
-              // lightBlueBtn('Reserve an Appointment date', const EdgeInsets.all(20), () => _selectDate(context)),
+              // if (widget.doctor.appointments!.isNotEmpty)
+              InkWell(
+                onTap: () {
+                  final appointments = Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                    return AppointmentsList(
+                      doctors: widget.doctor,
+                      selected: selectedAppointments,
+                    );
+                  }));
 
-              if (widget.doctor.appointments!.isNotEmpty)
-                Row(
+                  if (appointments != null) {
+                    setState(() {
+                      selectedAppointments = true;
+                    });
+                  }
+                },
+                child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -191,38 +208,39 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         ],
                       ),
                     ),
-                    DropdownButtonHideUnderline(
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButtonFormField<Appointments>(
-                          value: value,
-                          decoration:
-                              const InputDecoration.collapsed(hintText: ''),
-                          // icon: const Icon(Icons.arrow_downward),
-                          elevation: 16,
-                          style: TextStyle(
-                            color: CustomColors.darkGrayColor,
-                          ),
-                          onChanged: (Appointments? newValue) {
-                            FocusScope.of(context).unfocus();
-                            setState(() {
-                              indexAppointment = newValue!;
-                            });
-                          },
-                          items: widget.doctor.appointments!
-                              .map<DropdownMenuItem<Appointments>>(
-                                  (Appointments value) {
-                            return DropdownMenuItem<Appointments>(
-                              value: value,
-                              child:
-                                  Text('${value.date!}, ${value.paymentType!}'),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    )
+                    // DropdownButtonHideUnderline(
+                    //   child: ButtonTheme(
+                    //     alignedDropdown: true,
+                    //     child: DropdownButtonFormField<Appointments>(
+                    //       value: value,
+                    //       decoration:
+                    //           const InputDecoration.collapsed(hintText: ''),
+                    //       // icon: const Icon(Icons.arrow_downward),
+                    //       elevation: 16,
+                    //       style: TextStyle(
+                    //         color: CustomColors.darkGrayColor,
+                    //       ),
+                    //       onChanged: (Appointments? newValue) {
+                    //         FocusScope.of(context).unfocus();
+                    //         setState(() {
+                    //           indexAppointment = newValue!;
+                    //         });
+                    //       },
+                    //       items: widget.doctor.appointments!
+                    //           .map<DropdownMenuItem<Appointments>>(
+                    //               (Appointments value) {
+                    //         return DropdownMenuItem<Appointments>(
+                    //           value: value,
+                    //           child:
+                    //               Text('${value.date!}, ${value.paymentType!}'),
+                    //         );
+                    //       }).toList(),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
+              ),
               if (selectedDate != null && selectedTime != null)
                 Column(
                   children: [
@@ -260,7 +278,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           isScrollControlled: true,
                           builder: (BuildContext context) {
                             return PaymentPage(
-                              myUser: widget.myUser!,
+                            //  myUser: widget.myUser!,
                               date: indexAppointment,
                             );
                           });
@@ -273,6 +291,4 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       ),
     );
   }
-
-
 }

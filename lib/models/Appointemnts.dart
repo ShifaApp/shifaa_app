@@ -27,29 +27,29 @@ class Appointments {
     _type = appointmentType;
   }
 
- factory Appointments.fromJson(dynamic json) {
-    return Appointments( completed:  json["completed"]  ,
-      date : json['date'],
-      doctorName : json['doctor_name'],
-      hospitalName : json['hospital_name'],
-      paymentType : json['payment_type'],
-      patientName : json['patient_name'],
-      patientId : json['patient_id'],
-      doctorId : json['doctor_id'],
-      hospitalId : json['hospital_id'],
-
-      appointmentType : json['appointment_type'],);
-    // _completed = json['completed'];
-    // _date = json['date'];
-    // _doctorName = json['doctor_name'];
-    // _hospitalName = json['hospital_name'];
-    // _paymentType = json['payment_type'];
-    // _patientName = json['patient_name'];
-    // _patientId = json['patient_id'];
-    // _doctorId = json['doctor_id'];
-    // _hospitalId = json['hospital_id'];
+  Appointments.fromJson(dynamic json) {
+    _completed = json['completed'];
+    _date = json['date'];
+    _doctorName = json['doctor_name'];
+    _hospitalName = json['hospital_name'];
+    _paymentType = json['payment_type'];
+    _patientName = json['patient_name'];
+    _patientId = json['patient_id'];
+    _doctorId = json['doctor_id'];
+    _hospitalId = json['hospital_id'];
+    _type = json['appointment_type'];
+    // return Appointments( completed:  json["completed"]  ,
+    //   date : json['date'],
+    //   doctorName : json['doctor_name'],
+    //   hospitalName : json['hospital_name'],
+    //   paymentType : json['payment_type'],
+    //   patientName : json['patient_name'],
+    //   patientId : json['patient_id'],
+    //   doctorId : json['doctor_id'],
+    //   hospitalId : json['hospital_id'],
     //
-    // _type = json['appointment_type'];
+    //   appointmentType : json['appointment_type'],);
+
   }
   bool? _completed;
   String? _date;

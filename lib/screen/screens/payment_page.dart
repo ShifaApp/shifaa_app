@@ -16,9 +16,9 @@ import '../widget/text_field_class.dart';
 
 class PaymentPage extends StatefulWidget {
   final Appointments date;
-  final MyUser myUser;
+  //final MyUser myUser;
 
-  const PaymentPage({Key? key, required this.date,required this.myUser})
+  const PaymentPage({Key? key, required this.date})
       : super(key: key);
 
   @override
@@ -212,7 +212,7 @@ class _PaymentPageState extends State<PaymentPage> {
         .child(appointments);
 
     widget.date.setPatientId(FirebaseAuth.instance.currentUser!.uid);
-    widget.date.setPatientName(widget.myUser.name);
+  //  widget.date.setPatientName(widget.myUser.name);
 
 
     doctorQuery  .push()

@@ -120,7 +120,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        appointments.patientName ?? "",
+                        appointments.patientName ?? "No Patient yet",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),

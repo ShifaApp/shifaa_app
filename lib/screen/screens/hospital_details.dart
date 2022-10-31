@@ -1,140 +1,251 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor_details.dart';
 import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 
+import '../../const/const.dart';
 import '../../design/color.dart';
 import '../../helpers/contact_helper.dart';
 import '../../models/user.dart';
 
 class HospitalDetails extends StatefulWidget {
   final Hospitals hospital;
-  final MyUser myUser;
 
-  const HospitalDetails({Key? key, required this.hospital,required this.myUser}) : super(key: key);
+  const HospitalDetails({Key? key, required this.hospital}) : super(key: key);
 
   @override
   State<HospitalDetails> createState() => _HospitalDetailsState();
 }
 
 class _HospitalDetailsState extends State<HospitalDetails> {
+  List<Doctors> doctor=[];
+  @override
+  void initState() {
+    super.initState();
+
+    Query ref = FirebaseDatabase.instance
+        .reference()
+        .child(hospitals)
+        .child(widget.hospital.hospitalId!)
+        .child(doctors).orderByKey();
+
+
+    ref.get().then((h) {
+      if (h.exists) {
+        for
+        print(h.value);
+        doctor.add(Doctors.fromJson(h.value));
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: basicAppBarWithBck(widget.hospital.name!),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                height: MediaQuery.of(context).size.height / 5,
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: MediaQuery.of(context).size.height / 5,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                border:
+                    Border.all(color: CustomColors.lightBlueColor, width: 3),
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+              ),
+              child: widget.hospital.image != null
+                  ? Image.network(
+                      widget.hospital.image!,
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                    )
+                  : Image.asset('assests/shifa.png'),
+            ),
+            Divider(
+              color: CustomColors.lightGrayColor,
+            ),
+            InkWell(
+              onTap: () {
+                directToPhoneCall(widget.hospital.phone.toString());
+              },
+              child: Container(
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   border:
-                      Border.all(color: CustomColors.lightBlueColor, width: 3),
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10)),
+                      Border.all(color: CustomColors.lightBlueColor, width: 1),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: widget.hospital.image != null
-                    ? Image.network(
-                        widget.hospital.image!,
-                        fit: BoxFit.fill,
-                      )
-                    : Image.asset('assests/shifa.png'),
-              ),
-              Divider(
-                color: CustomColors.lightGrayColor,
-              ),
-              InkWell(
-                onTap: () {
-                  directToPhoneCall(widget.hospital.phone.toString());
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: CustomColors.lightBlueColor, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.phone, color: Colors.green),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.hospital.phone!.toString(),
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  //  openMap(widget.hospital.);
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: CustomColors.lightBlueColor, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.location_on_outlined,
-                            color: Colors.green),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.hospital.address!,
-                          maxLines: 2,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Divider(
-                color: CustomColors.lightGrayColor,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Doctors',
-                      style: TextStyle(
-                          color: CustomColors.lightBlueColor,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.phone, color: Colors.green),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.hospital.phone!.toString(),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ),
+            InkWell(
+              onTap: () {
+                //  openMap(widget.hospital.);
+              },
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: CustomColors.lightBlueColor, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child:
+                          Icon(Icons.location_on_outlined, color: Colors.green),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.hospital.address!,
+                        maxLines: 2,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Divider(
+              color: CustomColors.lightGrayColor,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Doctors',
+                    style: TextStyle(
+                        color: CustomColors.lightBlueColor,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+
+            // FirebaseAnimatedList(
+            //   query: FirebaseDatabase.instance.reference().child(hospitals).child(widget.hospital.hospitalId!).child(doctors),
+            //   itemBuilder: (BuildContext context, DataSnapshot snapshot,
+            //       Animation<double> animation, int index) {
+            //     if (snapshot.exists && snapshot.value != null) {
+            //       print(snapshot.value);
+            //       Doctors doctor = Doctors.fromJson(snapshot.value);
+            //
+            //       //list item design
+            //       return InkWell(
+            //         onTap: () {
+            //           if(doctor !=null ) {
+            //             Navigator.push(context,
+            //                 MaterialPageRoute(builder: (context) {
+            //                   return DoctorDetails(
+            //                   //  myUser: widget.myUser,
+            //                     doctor: doctor,
+            //                   );
+            //                 }));
+            //           }
+            //         },
+            //         child: Container(
+            //           //    height: MediaQuery.of(context).size.height/3,
+            //           margin: const EdgeInsets.all(10),
+            //           //    height: MediaQuery.of(context).size.height/7,
+            //           decoration: BoxDecoration(
+            //             color: CustomColors.primaryWhiteColor,
+            //             borderRadius: BorderRadius.circular(10),
+            //             border: Border.all(
+            //                 color: CustomColors.lightBlueColor, width: 3),
+            //           ),
+            //           child: Column(
+            //             children: [
+            //               Container(
+            //                 decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10),
+            //                 ),
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(top: 8.0),
+            //                   child: SizedBox(
+            //                     height: MediaQuery.of(context).size.height / 8,
+            //                     child: doctor.image !=
+            //                         null
+            //                         ? Image.network(
+            //                       doctor.image!,
+            //                       fit: BoxFit.fill,
+            //                     )
+            //                         : Image.asset('assests/shifa.png'),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Divider(
+            //                 color: CustomColors.lightBlueColor,
+            //                 height: 3,
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.all(8.0),
+            //                 child: Text(
+            //                   doctor.name != null
+            //                       ? doctor.name!
+            //                       : '',
+            //                   style: const TextStyle(
+            //                       fontSize: 18, fontWeight: FontWeight.w800),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.all(8.0),
+            //                 child: Text(
+            //                   doctor.specialist != null
+            //                       ? doctor.specialist!
+            //                       : "",
+            //                   style: const TextStyle(
+            //                       fontSize: 16, fontWeight: FontWeight.w500),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     } else {
+            //       return const Text('no data ');
+            //     }
+            //   },
+            // ),
+            if (doctor.isNotEmpty)
               ListView.builder(
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      if(widget.hospital.doctors![index] !=null ) {
+                      if (doctor[index] != null) {
                         Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return DoctorDetails(
-                          myUser: widget.myUser,
-                          doctor: widget.hospital.doctors![index],
-                        );
-                      }));
+                            MaterialPageRoute(builder: (context) {
+                          return DoctorDetails(
+                            doctor: doctor[index],
+                          );
+                        }));
                       }
                     },
                     child: Container(
@@ -157,11 +268,10 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: SizedBox(
                                 height: MediaQuery.of(context).size.height / 8,
-                                child: widget.hospital.doctors![index].image !=
-                                        null
+                                child: doctor[index].image != null
                                     ? Image.network(
-                                        widget.hospital.doctors![index].image!,
-                                        fit: BoxFit.fill,
+                                        doctor[index].image!,
+                                        fit: BoxFit.fill,  width: MediaQuery.of(context).size.width
                                       )
                                     : Image.asset('assests/shifa.png'),
                               ),
@@ -174,9 +284,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              widget.hospital.doctors![index].name != null
-                                  ? widget.hospital.doctors![index].name!
-                                  : '',
+                              doctor[index].name ?? '',
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w800),
                             ),
@@ -184,9 +292,9 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              widget.hospital.doctors![index].specialist != null
-                                  ? widget.hospital.doctors![index].specialist!
-                                  : "",
+
+                                  doctor[index].specialist  ??
+                                  "",
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w500),
                             ),
@@ -196,12 +304,11 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                     ),
                   );
                 },
-                itemCount: widget.hospital.doctors!.length,
+                itemCount: doctor.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
               )
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -258,7 +258,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
                     email: emailController.value.text,
                     name: nameController.value.text,
                     address: addressController.value.text,
-                    accepted: false,
+                    accepted:false,
                     phone: phoneController.value.text)
                 .toMap())
             .then((value) {

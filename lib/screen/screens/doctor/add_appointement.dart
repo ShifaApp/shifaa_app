@@ -136,10 +136,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                               .then((value) {
                             showSuccessMessage(context,
                                 'Your Appointment added  successfully');
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const DoctorDashboard();
-                            }));
+                            moveToNewStack(context, doctorDashBoardRoute);
+
                           });
                         }
                       });

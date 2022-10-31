@@ -28,57 +28,73 @@ class Hospitals {
     _phone = phone;
   }
 
-   factory Hospitals.fromJson(dynamic json) {
-    return Hospitals(
-        address : json['address'],
-        image : json['image'],
-        name : json['name'],
-    email : json['email'],
-    accepted : json['accepted'],
-    phone : json['phone'],
-    id : json['hospitalId'],doctors: Doctors.fromJson(json['Doctors']) as List<Doctors>
-    );
-  //   if (json['Doctors'] != null) {
-  //     _doctors = [];
-  //     List<Appointments> appointments = [];
-  //     if (json['appointments'] != null) {
-  //
-  //       json['appointments'].forEach((v) {
-  //         appointments.add(Appointments( completed:  json["completed"]  ,
-  //           date : json['date'],
-  //           doctorName : json['doctor_name'],
-  //           hospitalName : json['hospital_name'],
-  //           paymentType : json['payment_type'],
-  //           patientName : json['patient_name'],
-  //           patientId : json['patient_id'],
-  //           doctorId : json['doctor_id'],
-  //           hospitalId : json['hospital_id'],
-  //
-  //           appointmentType : json['appointment_type'],));
-  //       });
-  //     }
-  //     json['Doctors'].forEach((v) {
-  //       _doctors?.add(Doctors(      fees : json['fees'],
-  //          image :json['image'],
-  //           name : json['name'],
-  //           phone : json['phone'],
-  //           email : json['email'],
-  //           hospitalName : json['hospitalName'],
-  //           hospitalId : json['hospitalId'],
-  //           specialist : json['specialist'],
-  //           id : json['doctorId'],appointments: appointments
-  //         ));
-  //     });
-  //   }
-  //
-  // //  _doctors = json['Doctors'] ;
-  //   _address = json['address'];
-  //   _image = json['image'];
-  //   _name = json['name'];
-  //   _email = json['email'];
-  //   _accepted = json['accepted'];
-  //   _phone = json['phone'];
-  //   _id = json['hospitalId'];
+  Hospitals.fromJson(dynamic json) {
+    if (json != null) {
+      // if (json['Doctors'] != null) {
+      //   _doctors = [];
+      //   json['Doctors'].forEach((v) {
+      //     _doctors?.add(Doctors.fromJson(v));
+      //   });
+      // }
+      //  _doctors = json['Doctors'] ;
+      _address = json['address'];
+      _image = json['image'];
+      _name = json['name'];
+      _email = json['email'];
+      _accepted = json['accepted'];
+      _phone = json['phone'];
+      _id = json['hospitalId'];
+    }
+    // return Hospitals(
+    //     address : json['address'],
+    //     image : json['image'],
+    //     name : json['name'],
+    // email : json['email'],
+    // accepted : json['accepted'],
+    // phone : json['phone'],
+    // id : json['hospitalId'],doctors: Doctors.fromJson(json['Doctors']) as List<Doctors>
+    // );
+    //   if (json['Doctors'] != null) {
+    //     _doctors = [];
+    //     List<Appointments> appointments = [];
+    //     if (json['appointments'] != null) {
+    //
+    //       json['appointments'].forEach((v) {
+    //         appointments.add(Appointments( completed:  json["completed"]  ,
+    //           date : json['date'],
+    //           doctorName : json['doctor_name'],
+    //           hospitalName : json['hospital_name'],
+    //           paymentType : json['payment_type'],
+    //           patientName : json['patient_name'],
+    //           patientId : json['patient_id'],
+    //           doctorId : json['doctor_id'],
+    //           hospitalId : json['hospital_id'],
+    //
+    //           appointmentType : json['appointment_type'],));
+    //       });
+    //     }
+    //     json['Doctors'].forEach((v) {
+    //       _doctors?.add(Doctors(      fees : json['fees'],
+    //          image :json['image'],
+    //           name : json['name'],
+    //           phone : json['phone'],
+    //           email : json['email'],
+    //           hospitalName : json['hospitalName'],
+    //           hospitalId : json['hospitalId'],
+    //           specialist : json['specialist'],
+    //           id : json['doctorId'],appointments: appointments
+    //         ));
+    //     });
+    //   }
+    //
+    // //  _doctors = json['Doctors'] ;
+    //   _address = json['address'];
+    //   _image = json['image'];
+    //   _name = json['name'];
+    //   _email = json['email'];
+    //   _accepted = json['accepted'];
+    //   _phone = json['phone'];
+    //   _id = json['hospitalId'];
   }
   List<Doctors>? _doctors;
   String? _address;
@@ -122,7 +138,7 @@ class Hospitals {
       'image': _image,
       'phone': _phone,
       'hospitalId': _id,
-      'Doctors':_doctors,
+      'Doctors': _doctors,
       'accepted': _accepted,
     };
   }

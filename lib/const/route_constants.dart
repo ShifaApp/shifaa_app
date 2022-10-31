@@ -24,12 +24,12 @@ const String mainRoute = "mainRoute";
 const String dashBoardRoute = "dashBoard";
 const String registerHospitalRoute = "registerHospital";
 const String hospitalDashBoardRoute = "hospitalDashBoard";
-//const String doctorDashBoardRoute = "doctorDashBoard";
+const String doctorDashBoardRoute = "doctorDashBoard";
 
 const String doctorLoginRoute = "doctorLogin";
 
 final Map<String, WidgetBuilder> routMap = {
-  // doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
+   doctorDashBoardRoute: (BuildContext context) => const DoctorDashboard(),
    hospitalDashBoardRoute: (BuildContext context) => const HospitalDashboard(),
 
    registerHospitalRoute: (BuildContext context) => const RegisterHospital(),

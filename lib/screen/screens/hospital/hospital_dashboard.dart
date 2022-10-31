@@ -14,6 +14,7 @@ import '../../../const/route_constants.dart';
 import '../../../design/color.dart';
 import '../../../helpers/route_helper.dart';
 import '../../widget/app_bar_design.dart';
+import 'hospital_doctor_details.dart';
 
 class HospitalDashboard extends StatefulWidget {
   const HospitalDashboard({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
             return InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DoctorDetails(
+                  return HospitalDoctorDetails(
                     doctor: doctor,
                   );
                 }));
