@@ -3,11 +3,14 @@
 class Const{
   static String currentUserId = '';
   static String doctorId = '';
+  static String userName = '';
 
 }
 const users = "Users";
 const hospitals = "Hospitals";
 const appointments = "appointments";
+const selectedAppointments = "selectedAppointments";
+
 const doctors = "Doctors";
 const recipes = "Recipes";
 

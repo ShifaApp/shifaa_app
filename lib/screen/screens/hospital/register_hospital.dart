@@ -227,7 +227,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
         ref
             .child(userCredential.user!.uid)
             .set(Hospitals(
-                    image: imageUrl,
+                    image: imageUrl,id:userCredential.user!.uid ,
                     email: emailController.value.text,
                     name: nameController.value.text,
                     address: addressController.value.text,

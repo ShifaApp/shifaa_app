@@ -71,10 +71,11 @@ class _LogInPageState extends State<LogInPage> {
             body: TabBarView(
               children: <Widget>[
                 pageDesign((userId) {
+
                   ref.child(users).child(userId!).get().then((value) {
                     if (value.exists) {
                       print(value.value);
-
+                      Const.userName = MyUser.fromJson(value.value).name ?? ' ';
                       moveToNewStackWithArgs(context,
                           MaterialPageRoute(builder: (context) {
                         return const DashboardPage();

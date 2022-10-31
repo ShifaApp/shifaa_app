@@ -18,8 +18,7 @@ class PaymentPage extends StatefulWidget {
   final Appointments date;
   //final MyUser myUser;
 
-  const PaymentPage({Key? key, required this.date})
-      : super(key: key);
+  const PaymentPage({Key? key, required this.date}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -28,7 +27,7 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   bool isCashSelected = true;
   bool isInsuranceSelected = false;
-  String paymentType = '';
+  String paymentType = 'Cash';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,29 +200,24 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void confirmAppointment() {
-    DatabaseReference ref = FirebaseDatabase.instance
-        .reference();
-    final userQuery =  ref.child(users)
-        .child(Const.currentUserId)
-        .child(appointments);
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    final userQuery =
+        ref.child(users).child(Const.currentUserId).child(appointments);
 
-       final doctorQuery =  ref.child(hospitals)
-        .child(widget.date.hospitalId!).child(widget.date.doctorId!)
-        .child(appointments);
+    final doctorQuery =
+        ref.child(doctors).child(widget.date.doctorId ?? '').child(appointments);
 
-    widget.date.setPatientId(FirebaseAuth.instance.currentUser!.uid);
-  //  widget.date.setPatientName(widget.myUser.name);
+    widget.date.setPatientId(Const.currentUserId);
+    widget.date.setPatientName(Const.userName);
+    widget.date.setPaymentType(paymentType);
+    widget.date.setReserved(true);
 
 
-    doctorQuery  .push()
-        .update(widget.date
-            .toMap())
-        .then((value) {
-
-          userQuery.push().update(widget.date.toMap()).then((value) {
-            showSuccessMessage(context, 'Your reservation done successfully');
-            moveToNewStack(context, dashBoardRoute);
-          });
+    doctorQuery.push().update(widget.date.toMap()).then((value) {
+      userQuery.push().update(widget.date.toMap()).then((value) {
+        showSuccessMessage(context, 'Your reservation done successfully');
+        moveToNewStack(context, dashBoardRoute);
+      });
     });
   }
 

@@ -134,7 +134,7 @@ class _AddRecipeState extends State<AddRecipe> {
                       .then((value) {
                     showSuccessMessage(context, 'Recipe added successfully');
                     moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
-                      return DoctorDashboard();
+                      return const DoctorDashboard();
                     }));
                   });
                 } else {

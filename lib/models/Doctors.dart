@@ -149,4 +149,9 @@ class Doctors {
       'appointments': _appointments
     };
   }
+
+  @override
+  String toString() {
+    return 'Doctors{_name: $_name, _email: $_email, _id: $_id}';
+  }
 }

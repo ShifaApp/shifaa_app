@@ -14,6 +14,7 @@ class Appointments {
       String? patientName,
       String? patientId,
       String? doctorId,
+        bool? reserved,
       String? appointmentType}) {
     _completed = completed;
     _date = date;
@@ -25,6 +26,7 @@ class Appointments {
     _patientId = patientId;
     _doctorId = doctorId;
     _type = appointmentType;
+    _reserved =reserved;
   }
 
   Appointments.fromJson(dynamic json) {
@@ -38,6 +40,7 @@ class Appointments {
     _doctorId = json['doctor_id'];
     _hospitalId = json['hospital_id'];
     _type = json['appointment_type'];
+    _reserved =json['reserved'];
     // return Appointments( completed:  json["completed"]  ,
     //   date : json['date'],
     //   doctorName : json['doctor_name'],
@@ -55,6 +58,7 @@ class Appointments {
   String? _date;
   String? _doctorName;
   String? _doctorId;
+  bool? _reserved;
 
   String? _hospitalName;
   String? _paymentType;
@@ -63,7 +67,8 @@ class Appointments {
   String? _patientId;
   String? _hospitalId;
 
-  bool? get reserved => _completed;
+  bool? get reserved=> _reserved;
+  bool? get completed => _completed;
   String? get date => _date;
   String? get doctorName => _doctorName;
   String? get hospitalName => _hospitalName;
@@ -77,13 +82,23 @@ class Appointments {
   setPatientName(String patientName) {
     _patientName = patientName;
   }
-
+  setPaymentType(String pay) {
+    _paymentType = pay;
+  }
   setPatientId(String patientId) {
     _patientId = patientId;
   }
 
+  setReserved(bool  value) {
+    _reserved = value;
+  }
+  setCompleted(bool  value) {
+    _completed = value;
+  }
+
   Map<String, dynamic> toMap() {
     return {
+      "reserved":_reserved,
       "completed": _completed,
       'date': _date,
       'doctor_name': _doctorName,

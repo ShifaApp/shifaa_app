@@ -105,7 +105,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                   color: CustomColors.primaryWhiteColor,
                   borderRadius: BorderRadius.circular(10),
                   border:
-                      Border.all(color: CustomColors.lightBlueColor, width: 3),
+                      Border.all(color:appointments.reserved?? false ? CustomColors.lightBlueColor:CustomColors.darkGrayColor , width: 3),
                 ),
                 child: Column(
                   children: [

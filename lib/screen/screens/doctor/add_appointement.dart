@@ -131,7 +131,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                       hospitalName: doctor.hospitalName,
                                       doctorName: doctor.name,
                                       appointmentType: controller.value.text,
-                                      completed: false)
+                                      completed: false,reserved: false)
                                   .toMap())
                               .then((value) {
                             showSuccessMessage(context,
