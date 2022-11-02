@@ -70,7 +70,7 @@ class _SettingPageState extends State<SettingPage> {
                     }));
 
               }),
-              profileListDesign('My Recipes', Icons.contact_page_outlined,
+              profileListDesign('My Prescriptions', Icons.contact_page_outlined,
                   onPressed: () {
                 // if(user !=null) {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
