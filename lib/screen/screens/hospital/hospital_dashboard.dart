@@ -26,6 +26,8 @@ class HospitalDashboard extends StatefulWidget {
 class _HospitalDashboardState extends State<HospitalDashboard> {
   late Hospitals? hospital;
   String hospitalId = '';
+  List<Doctors>? doctor;
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +38,30 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
     ref.child(Const.currentUserId).get().then((h) {
       if (h.exists) {
         hospital = Hospitals.fromJson(h.value);
-        setState(() {
-          hospitalId = hospital!.hospitalId!;
+
+
+        DatabaseReference ref = FirebaseDatabase.instance
+            .reference()
+
+            .child(doctors);
+
+
+        ref.once().then((value) {
+          if (value.snapshot.exists) {
+            var values = value.snapshot.children;
+            for(var one in values){
+              Doctors doctors = Doctors.fromJson(one.value);
+
+              if(doctors.hospitalId == hospital!.hospitalId!) {
+
+                if(doctor == null) doctor = [];
+                doctor!.add(doctors);
+                setState(() {});
+              }
+            }
+
+
+          }
         });
       }
     });
@@ -83,23 +107,18 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
           });
         }
       }),
-      body: FirebaseAnimatedList(
-        query:
-            FirebaseDatabase.instance.reference().child(doctors).orderByValue(),
-        // .child(Const.currentUserId)
-        // .child(doctors),
-        itemBuilder: (BuildContext context, DataSnapshot snapshot,
-            Animation<double> animation, int index) {
-          if (snapshot.exists && snapshot.value != null) {
-            Map<dynamic, dynamic> map = snapshot.value as Map<dynamic, dynamic>;
-            Doctors doctor = Doctors.fromJson(map);
+      body:   (doctor!=null ) ?ListView.builder(
+
+        itemCount: doctor!.length,
+        itemBuilder: (context, index) {
+
 
             //list item design
             return InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return HospitalDoctorDetails(
-                    doctor: doctor,
+                    doctor: doctor![index],
                   );
                 }));
               },
@@ -123,9 +142,9 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height / 8,
-                          child: doctor.image != null
+                          child: doctor![index].image != null
                               ? Image.network(
-                                  doctor.image!,
+                                  doctor![index].image!,
                                   fit: BoxFit.fill,
                                 )
                               : Image.asset('assests/shifa.png'),
@@ -139,7 +158,7 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        doctor.name != null ? doctor.name! : '',
+                        doctor![index].name != null ? doctor![index].name! : '',
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w800),
                       ),
@@ -147,7 +166,7 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        doctor.specialist != null ? doctor.specialist! : "",
+                        doctor![index].specialist != null ? doctor![index].specialist! : "",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
@@ -156,11 +175,9 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
                 ),
               ),
             );
-          } else {
-            return const Text('no data ');
-          }
+
         },
-      ),
+      ):Text(''),
     );
   }
 }
