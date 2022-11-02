@@ -263,7 +263,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                       },
                       child: Container(
                         //    height: MediaQuery.of(context).size.height/3,
-                        margin: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.symmetric(vertical: 4,horizontal: 4),
                         //    height: MediaQuery.of(context).size.height/7,
                         decoration: BoxDecoration(
                           color: CustomColors.primaryWhiteColor,
@@ -280,7 +280,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: SizedBox(
-                                  height: MediaQuery.of(context).size.height / 8,
+                                  height: MediaQuery.of(context).size.height / 7.5,
                                   child: doctor![index].image != null
                                       ? Image.network(
                                           doctor![index].image!,
@@ -295,11 +295,11 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                               height: 3,
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2),
                               child: Text(
                                 doctor![index].name ?? '',
                                 style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w800),
+                                    fontSize: 16, fontWeight: FontWeight.w800),
                               ),
                             ),
                             Padding(
@@ -307,7 +307,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                               child: Text(
 
                                     doctor![index].specialist  ??
-                                    "",
+                                    "",maxLines:2,
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w500),
                               ),

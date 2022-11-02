@@ -58,8 +58,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Image.network(width:  MediaQuery.of(context).size.width,
-                          hospital.image!,        fit: BoxFit.fill,
+                        child:  hospital.image == null ? Image.asset('assests/shifa.png'): Image.network(width:  MediaQuery.of(context).size.width,
+                          hospital.image ?? '',        fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        hospital.name!,
+                        hospital.name ?? '',
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w800),
                       ),
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        hospital.address!,
+                        hospital.address ?? '',
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
