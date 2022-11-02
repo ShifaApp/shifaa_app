@@ -115,7 +115,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
               //     });
               //   }),
               // if (closeAppointment)
-                lightBlueBtn('Add Recipe ', const EdgeInsets.all(20), () {
+                lightBlueBtn('Add Prescription ', const EdgeInsets.all(20), () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return  AddRecipe(appointments: widget.appointments);
                   }));
