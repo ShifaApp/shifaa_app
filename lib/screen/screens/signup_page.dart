@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
-  List<String> sexList = ['Select Your Sex ', 'Male', 'Female'];
+  List<String> sexList = ['Select Your Gender ', 'Male', 'Female'];
   String? selectedSex;
   bool isBtnEnabled = true;
   @override
@@ -84,7 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                         lbTxt: 'Your Phone',
                         controller: phoneController,
-                        enabled: false,
+
                         textInputType: TextInputType.phone,
                         textInputAction: TextInputAction.next),
                     textFieldStyle(
@@ -92,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                         lbTxt: 'Your Insurance Id ',
                         controller: insuranceController,
-                        enabled: false,
+
                         textInputType: TextInputType.number,
                         textInputAction: TextInputAction.next),
                     textFieldStyle(
@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
                         lbTxt: 'Your Address',
                         controller: addressController,
-                        enabled: false,
+
                         textInputType: TextInputType.text,
                         textInputAction: TextInputAction.next),
                     // sex , birth date
@@ -243,6 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
               password: passController.value.text);
       DatabaseReference ref =
           FirebaseDatabase.instance.reference().child(users);
+      Const.currentUserId= userCredential.user!.uid;
 
       ref
           .child(userCredential.user!.uid)

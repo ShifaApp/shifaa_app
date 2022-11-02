@@ -120,7 +120,7 @@ class _LoginDoctorState extends State<LoginDoctor> {
               email: emailController.value.text,
               password: passController.value.text);
 
-      Const.doctorId = userCredential.user!.uid;
+      Const.currentUserId = userCredential.user!.uid;
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return const DoctorDashboard();
       }));

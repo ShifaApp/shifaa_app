@@ -2,7 +2,6 @@
 
 class Const{
   static String currentUserId = '';
-  static String doctorId = '';
   static String userName = '';
 
 }

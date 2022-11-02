@@ -6,6 +6,7 @@ import 'package:shifa_app_flutter/screen/screens/home_page.dart';
 import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
 import 'package:shifa_app_flutter/screen/widget/profile_widget.dart';
 
+import '../../const/const.dart';
 import '../../const/route_constants.dart';
 import '../../helpers/route_helper.dart';
 import 'info_page.dart';
@@ -65,22 +66,22 @@ class _SettingPageState extends State<SettingPage> {
               profileListDesign('My Information', Icons.account_circle_outlined,
                   onPressed: () {
                 // if(user !=null) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const MyInfo();
-                    }));
-
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyInfo();
+                }));
               }),
               profileListDesign('My Prescriptions', Icons.contact_page_outlined,
                   onPressed: () {
                 // if(user !=null) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const MyRecipes();
-                    }));
-
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyRecipes();
+                }));
               }),
 
               profileListDesign('Sign Out', Icons.arrow_back, onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
+                  Const.currentUserId = '';
+                  Const.userName = '';
                   moveToNewStack(context, loginRoute);
                 });
                 // AuthRepository().logoutUser(context).then((value) {

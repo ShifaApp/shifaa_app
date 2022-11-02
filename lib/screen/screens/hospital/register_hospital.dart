@@ -235,6 +235,7 @@ class _RegisterHospitalState extends State<RegisterHospital> {
                     phone: phoneController.value.text)
                 .toMap())
             .then((value) {
+          Const.currentUserId= userCredential.user!.uid;
               showSuccessMessage(context, 'Welcome ${nameController.value.text}');
           moveToNewStackWithArgs(context, MaterialPageRoute(builder: (context) {
             return const HospitalDashboard();
