@@ -246,7 +246,9 @@ class _HospitalDetailsState extends State<HospitalDetails> {
               //   },
               // ),
               if (doctor!=null )
-                ListView.builder(
+                GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount:2,
+                    ),
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
