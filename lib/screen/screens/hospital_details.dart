@@ -303,7 +303,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: Text(
 
                                     doctor![index].specialist  ??
