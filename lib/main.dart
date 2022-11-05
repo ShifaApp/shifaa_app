@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
+import 'package:shifa_app_flutter/screen/screens/dashboard_page.dart';
 import 'package:shifa_app_flutter/screen/screens/login_page.dart';
 
 import 'const/route_constants.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         accentColor: CustomColors.lightBlueColor,
         primarySwatch: Colors.lightBlue,
       ),
-      home: const LogInPage(),
+      home: const DashboardPage(),
     );
   }
 }

@@ -19,21 +19,21 @@ class DoctorDetails extends StatefulWidget {
   final Doctors doctor;
   //final MyUser? myUser;
 
-  const DoctorDetails({Key? key, required this.doctor,})
-      : super(key: key);
+  const DoctorDetails({
+    Key? key,
+    required this.doctor,
+  }) : super(key: key);
 
   @override
   State<DoctorDetails> createState() => _DoctorDetailsState();
 }
 
 class _DoctorDetailsState extends State<DoctorDetails> {
-
-
   List<Appointments> appointmentsList = [];
 
   bool selectedAppointments = false;
-  Appointments first= Appointments(date: 'Select Appointment');
-   Appointments indexAppointment=Appointments();
+  Appointments first = Appointments(date: 'Select Appointment');
+  Appointments indexAppointment = Appointments();
   @override
   void initState() {
     super.initState();
@@ -42,27 +42,22 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         .child(doctors)
         .child(widget.doctor.doctorId!);
 
-
     ref.child(appointments).once().then((value) {
       if (value.snapshot.exists) {
         var values = value.snapshot.children;
-        for(var one in values){
+        for (var one in values) {
           Appointments appointments = Appointments.fromJson(one.value);
           appointmentsList.add(appointments);
-          setState(() {
-
-          });
+          setState(() {});
         }
 
         appointmentsList.insert(0, first);
       }
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: basicAppBarWithBck(widget.doctor.name!),
       body: SafeArea(
@@ -181,7 +176,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         color: CustomColors.lightBlueColor, width: 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child:  Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonHideUnderline(
                       child: ButtonTheme(
@@ -189,32 +184,34 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         child: DropdownButtonFormField<Appointments>(
                           value: first,
                           decoration:
-                          const InputDecoration.collapsed(hintText: ''),
+                              const InputDecoration.collapsed(hintText: ''),
                           // icon: const Icon(Icons.arrow_downward),
                           elevation: 16,
                           style: TextStyle(
                             color: CustomColors.darkGrayColor,
                           ),
                           onChanged: (Appointments? newValue) {
-                            if(newValue != first) {
+                            if (newValue != first) {
                               FocusScope.of(context).unfocus();
                               setState(() {
                                 indexAppointment = newValue!;
                               });
-                            }else{
+                            } else {
                               indexAppointment = Appointments();
                             }
                           },
                           items: appointmentsList
                               .map<DropdownMenuItem<Appointments>>(
                                   (Appointments value) {
-                                return DropdownMenuItem<Appointments>(
-                                  value: value,
-                                  child:
-                                  Text('${value.date ?? ''}: ${value.appointmentType ?? ''}',style: const TextStyle(fontSize: 16,
-                                  fontWeight: FontWeight.w800),),
-                                );
-                              }).toList(),
+                            return DropdownMenuItem<Appointments>(
+                              value: value,
+                              child: Text(
+                                '${value.date ?? ''}: ${value.appointmentType ?? ''}',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w800),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
@@ -236,26 +233,31 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                           '${ indexAppointment.date ?? ''} \n ${ indexAppointment.appointmentType ?? ''}',
+                            '${indexAppointment.date ?? ''} \n ${indexAppointment.appointmentType ?? ''}',
                             maxLines: 2,
-                            style:  TextStyle(fontSize: 16,color: CustomColors.lightBlueColor, fontWeight: FontWeight.w800),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: CustomColors.lightBlueColor,
+                                fontWeight: FontWeight.w800),
                           ),
                         ),
                       ],
                     ),
-
                     lightBlueBtn('Continue Payment', const EdgeInsets.all(20),
-                            () {
-
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return PaymentPage(
-                                      //  myUser: widget.myUser!,
-                                      date: indexAppointment,
-                                    );
-                                  }));
-
-                        })
+                        () {
+                      if (Const.isUserGuest == false) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return PaymentPage(
+                            //  myUser: widget.myUser!,
+                            date: indexAppointment,
+                          );
+                        }));
+                      } else {
+                        showSuccessMessage(
+                            context, 'You Have to Log In first ');
+                      }
+                    })
                   ],
                 ),
             ],

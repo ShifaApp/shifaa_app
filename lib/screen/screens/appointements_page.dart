@@ -20,100 +20,111 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: basicAppBar('Appointments'),
-      body: FirebaseAnimatedList(
-        query: FirebaseDatabase.instance
-            .reference()
-            .child(users)
-            .child(Const.currentUserId)
-            .child(appointments),
-        itemBuilder: (BuildContext context, DataSnapshot snapshot,
-            Animation<double> animation, int index) {
-          if (snapshot.exists && snapshot.value != null) {
-            Appointments appointments = Appointments.fromJson(snapshot.value);
+      body: Const.isUserGuest == false
+          ? FirebaseAnimatedList(
+              query: FirebaseDatabase.instance
+                  .reference()
+                  .child(users)
+                  .child(Const.currentUserId)
+                  .child(appointments),
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                if (snapshot.exists && snapshot.value != null) {
+                  Appointments appointments =
+                      Appointments.fromJson(snapshot.value);
 
-            //list item design
-            return Container(
-              margin: const EdgeInsets.all(10),
-              //    height: MediaQuery.of(context).size.height/7,
-              decoration: BoxDecoration(
-                color: appointments.completed!
-                    ? Colors.green.withOpacity(0.3)
-                    : CustomColors.primaryWhiteColor,
-                borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: CustomColors.lightBlueColor, width: 1),
+                  //list item design
+                  return Container(
+                    margin: const EdgeInsets.all(10),
+                    //    height: MediaQuery.of(context).size.height/7,
+                    decoration: BoxDecoration(
+                      color: appointments.completed!
+                          ? Colors.green.withOpacity(0.3)
+                          : CustomColors.primaryWhiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: CustomColors.lightBlueColor, width: 1),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Appointment date:',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.primaryBlackColor),
+                              ),
+                              Text(
+                                appointments.date!,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.lightBlueColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Doctor Name: ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.primaryBlackColor),
+                              ),
+                              Text(
+                                appointments.doctorName!,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.lightBlueColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Appointment Type: ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.primaryBlackColor),
+                              ),
+                              Text(
+                                appointments.appointmentType ?? ' ',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: CustomColors.lightBlueColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const Text('no data ');
+                }
+              },
+            )
+          : const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Your are a Guest You Have to Log in First',
+                  style: TextStyle(fontSize: 22),
+                ),
               ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Appointment date:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.primaryBlackColor),
-                        ),
-                        Text(
-                          appointments.date!,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.lightBlueColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Doctor Name: ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.primaryBlackColor),
-                        ),
-                        Text(
-                          appointments.doctorName!,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.lightBlueColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Appointment Type: ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.primaryBlackColor),
-                        ),
-                        Text(
-                          appointments.appointmentType ?? ' ',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: CustomColors.lightBlueColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return const Text('no data ');
-          }
-        },
-      ),
+            ),
     );
   }
 }

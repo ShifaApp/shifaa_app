@@ -3,7 +3,7 @@
 class Const{
   static String currentUserId = '';
   static String userName = '';
-
+  static bool isUserGuest = true;
 }
 const users = "Users";
 const hospitals = "Hospitals";

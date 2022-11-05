@@ -6,7 +6,6 @@ import 'package:shifa_app_flutter/screen/screens/login_page.dart';
 import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
 
 import '../screen/screens/dashboard_page.dart';
-import '../screen/screens/doctor/login_doctor.dart';
 
 
 const String homeRoute = "home";
@@ -36,7 +35,6 @@ final Map<String, WidgetBuilder> routMap = {
    loginRoute: (BuildContext context) => const LogInPage(),
    signupRoute: (BuildContext context) => const SignUpPage(),
    dashBoardRoute: (BuildContext context) => const DashboardPage(),
-   doctorLoginRoute: (BuildContext context) => const LoginDoctor(),
 
 
 };

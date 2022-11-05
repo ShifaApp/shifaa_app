@@ -5,7 +5,6 @@ import 'package:shifa_app_flutter/const/const.dart';
 import 'package:shifa_app_flutter/design/color.dart';
 import 'package:shifa_app_flutter/models/user.dart';
 import 'package:shifa_app_flutter/screen/screens/dashboard_page.dart';
-import 'package:shifa_app_flutter/screen/screens/doctor/login_doctor.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/hospital_dashboard.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_hospital.dart';
 import 'package:shifa_app_flutter/screen/screens/signup_page.dart';
@@ -48,21 +47,35 @@ class _LogInPageState extends State<LogInPage> {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                 SliverAppBar(
-                   backgroundColor: CustomColors.lightBlueColor,
+                SliverAppBar(
+                  backgroundColor: CustomColors.lightBlueColor,
                   // centerTitle: true,
-                // title: Text('Log IN',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20)),
+                  // title: Text('Log IN',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20)),
                   pinned: true,
                   floating: true,
 
                   bottom: TabBar(
                     indicatorColor: CustomColors.primaryWhiteColor,
-                   indicatorWeight: 2,
+                    indicatorWeight: 2,
                     isScrollable: true,
                     tabs: [
-                      Tab(child: Text('Patient',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20),)),
-                      Tab(child: Text('Hospital',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20))),
-                      Tab(child: Text('Doctor',style: TextStyle(color: CustomColors.primaryWhiteColor,fontSize: 20))),
+                      Tab(
+                          child: Text(
+                        'Patient',
+                        style: TextStyle(
+                            color: CustomColors.primaryWhiteColor,
+                            fontSize: 20),
+                      )),
+                      Tab(
+                          child: Text('Hospital',
+                              style: TextStyle(
+                                  color: CustomColors.primaryWhiteColor,
+                                  fontSize: 20))),
+                      Tab(
+                          child: Text('Doctor',
+                              style: TextStyle(
+                                  color: CustomColors.primaryWhiteColor,
+                                  fontSize: 20))),
                     ],
                   ),
                 ),
@@ -71,7 +84,6 @@ class _LogInPageState extends State<LogInPage> {
             body: TabBarView(
               children: <Widget>[
                 pageDesign((userId) {
-
                   ref.child(users).child(userId!).get().then((value) {
                     if (value.exists) {
                       print(value.value);
@@ -82,7 +94,7 @@ class _LogInPageState extends State<LogInPage> {
                       }));
                     }
                   });
-                },userType: users),
+                }, userType: users),
                 pageDesign((userId) {
                   ref.child(hospitals).child(userId!).get().then((value) {
                     if (value.exists) {
@@ -94,7 +106,7 @@ class _LogInPageState extends State<LogInPage> {
                       }));
                     }
                   });
-                },userType:  hospitals),
+                }, userType: hospitals),
                 pageDesign((userId) {
                   ref.child(doctors).child(userId!).get().then((value) {
                     if (value.exists) {
@@ -106,18 +118,18 @@ class _LogInPageState extends State<LogInPage> {
                       }));
                     }
                   });
-                },userType: doctors),
+                }, userType: doctors),
               ],
             ),
           ))),
     );
   }
 
-  pageDesign(action,{userType = hospitals}) {
+  pageDesign(action, {userType = hospitals}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Column(
-       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -137,10 +149,11 @@ class _LogInPageState extends State<LogInPage> {
 
           ////////////////////////////
 
-
           Column(
             children: [
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               textFieldStyle(
                   context: context,
                   edgeInsetsGeometry: const EdgeInsets.only(bottom: 10),
@@ -160,51 +173,76 @@ class _LogInPageState extends State<LogInPage> {
                   () {
                 continueLogin(action);
               }),
-              if(userType == hospitals || userType == users )
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account ? ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
+              if (userType == hospitals || userType == users)
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account ? ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.lightBlueColor,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Sign Up',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: CustomColors.lightBlueColor,
-                        fontSize: 14,
-                      ),
-                    )
-                    ///////////////
-                    ,
-                  ],
+                      Text(
+                        'Sign Up',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.lightBlueColor,
+                          fontSize: 14,
+                        ),
+                      )
+                      ///////////////
+                    ],
+                  ),
+                  onTap: () {
+                    if (userType == users) {
+                      //  moveToNewStack(context, signupRoute);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const SignUpPage();
+                      }));
+                    } else {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const RegisterHospital();
+                      }));
+                    }
+                  },
                 ),
-                onTap: () {
-                  if(userType == users) {
-                  //  moveToNewStack(context, signupRoute);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const SignUpPage(
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Continue as Guest",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: CustomColors.lightBlueColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
 
-                      );
+                      ///////////////
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const DashboardPage();
                     }));
-                  } else {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const RegisterHospital(
-
-                      );
-                    }));
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),
-
         ],
       ),
     );
@@ -242,8 +280,6 @@ class _LogInPageState extends State<LogInPage> {
       registerInAuth().then((value) {
         action(value);
       });
-
-
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {
@@ -254,13 +290,14 @@ class _LogInPageState extends State<LogInPage> {
     }
   }
 
- Future<String> registerInAuth() async {
+  Future<String> registerInAuth() async {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: emailController.value.text,
             password: passController.value.text);
 
     Const.currentUserId = userCredential.user!.uid;
+    Const.isUserGuest = false;
 
     return userCredential.user!.uid;
     // setState(() {

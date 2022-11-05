@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/design/color.dart';
+import 'package:shifa_app_flutter/dialogs/snack_message.dart';
 import 'package:shifa_app_flutter/screen/screens/appointements_page.dart';
 import 'package:shifa_app_flutter/screen/screens/home_page.dart';
 import 'package:shifa_app_flutter/screen/widget/app_bar_design.dart';
@@ -65,20 +66,29 @@ class _SettingPageState extends State<SettingPage> {
               ),
               profileListDesign('My Information', Icons.account_circle_outlined,
                   onPressed: () {
-                // if(user !=null) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MyInfo();
-                }));
-              }),
-              profileListDesign('My Prescriptions', Icons.contact_page_outlined,
-                  onPressed: () {
-                // if(user !=null) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MyRecipes();
-                }));
+                if (Const.isUserGuest == false) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const MyInfo();
+                  }));
+                } else {
+                  showSuccessMessage(context, 'You Have to Log In first ');
+                }
               }),
 
-              profileListDesign('Sign Out', Icons.arrow_back, onPressed: () {
+              profileListDesign('My Prescriptions', Icons.contact_page_outlined,
+                  onPressed: () {
+                if (Const.isUserGuest == false) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const MyRecipes();
+                  }));
+                } else {
+                  showSuccessMessage(context, 'You Have to Log In first ');
+                }
+              }),
+
+              profileListDesign(
+                  Const.isUserGuest ? 'Log In' : 'Sign Out', Icons.arrow_back,
+                  onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
                   Const.currentUserId = '';
                   Const.userName = '';

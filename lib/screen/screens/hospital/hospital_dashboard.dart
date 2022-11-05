@@ -4,7 +4,6 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shifa_app_flutter/models/Doctors.dart';
 import 'package:shifa_app_flutter/models/Hospitals.dart';
-import 'package:shifa_app_flutter/screen/screens/doctor/login_doctor.dart';
 import 'package:shifa_app_flutter/screen/screens/doctor_details.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/edit_hospital_info.dart';
 import 'package:shifa_app_flutter/screen/screens/hospital/register_doctor.dart';
