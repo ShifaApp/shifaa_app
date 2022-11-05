@@ -27,7 +27,7 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   bool isCashSelected = true;
   bool isInsuranceSelected = false;
-  String paymentType = 'Cash';
+  String paymentType = 'Credit card';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       color: CustomColors.lightBlueColor),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
@@ -62,7 +62,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       onTap: () {
                         isCashSelected = true;
                         isInsuranceSelected = false;
-                        paymentType = 'Cash';
+                        paymentType = 'Credit card';
                         setState(() {});
                       },
                       child: Container(
@@ -80,7 +80,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.attach_money_outlined,
+                              Icons.credit_card,
                               color: !isCashSelected
                                   ? CustomColors.darkGrayColor
                                   : CustomColors.lightBlueColor,
@@ -89,7 +89,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Cash',
+                                'Credit card',
                                 style: TextStyle(
                                     color: !isCashSelected
                                         ? CustomColors.darkGrayColor
